@@ -32,7 +32,7 @@ const routes: Routes = [
   ],
   declarations: [ChatComponent,FileUploadComponent],
   providers: [ChatService, 
-   // provideAnimations(), // required animations providers
+   provideAnimations(), // required animations providers
  provideToastr(),
 ConfirmActionModalComponent],
   

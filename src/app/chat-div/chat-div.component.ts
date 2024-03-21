@@ -83,10 +83,11 @@ export class ChatDivComponent implements OnInit {
       )
     );
   }
-  async loadConversationHistory(conversationId: string): Promise<void> {
-    await this.router.navigate(['/pages/chat', conversationId]);
-    window.location.reload();
+  loadConversationHistory(conversationId: string): void {
+    this.router.navigate(['/pages/chat', conversationId]);
+   
   }
+  
   onDeleteConversation(conversationId: string): void {
     this.conversationService.deleteConversation(conversationId).subscribe(
       () => {
@@ -110,7 +111,7 @@ export class ChatDivComponent implements OnInit {
         if (response && response.conversationId) {
           this.router.navigate(['/pages/chat', response.conversationId]);
           this.alertServ.alertHandler("Conversation lancée", 'success');
-          window.location.reload();
+          
         } else {
           console.error('Error creating conversation: Invalid response');
           this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
