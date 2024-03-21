@@ -85,7 +85,6 @@ export class ChatDivComponent implements OnInit {
   }
   async loadConversationHistory(conversationId: string): Promise<void> {
     await this.router.navigate(['/pages/chat', conversationId]);
-    window.location.reload();
   }
   onDeleteConversation(conversationId: string): void {
     this.conversationService.deleteConversation(conversationId).subscribe(
