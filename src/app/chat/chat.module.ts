@@ -32,8 +32,8 @@ const routes: Routes = [
   ],
   declarations: [ChatComponent,FileUploadComponent],
   providers: [ChatService, 
-    BrowserAnimationsModule, 
-     provideToastr(),
+   provideAnimations(), 
+ provideToastr(),
 ConfirmActionModalComponent],
   
 })
