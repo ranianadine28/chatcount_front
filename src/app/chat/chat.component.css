@@ -11,11 +11,11 @@
 }
 
 .from {
-  background-color: rgb(224, 224, 224); /* couleur de fond pour les messages de l'expéditeur */
+  background-color: rgb(224, 224, 224); 
 }
 
 .to {
-  background-color: #c8d9f0; /* couleur de fond pour les messages du destinataire */
+  background-color: #c8d9f0; 
 }
 
 .input-group {
