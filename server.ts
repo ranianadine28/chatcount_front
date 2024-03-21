@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 const app = express();
 const PORT = process.env['PORT'] || 4000;
 
-const DIST_FOLDER = join(process.cwd(), 'dist/your-chatcount-front');
+const DIST_FOLDER = join(process.cwd(), 'dist/chatcount-front/browser');
 
 // Serve static files
 app.use(express.static(DIST_FOLDER));
