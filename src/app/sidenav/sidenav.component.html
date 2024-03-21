@@ -1,0 +1,31 @@
+<div class="sidenav" >
+    <div class="first-column">
+        <div class="logo-container">
+            <button class="logo" >C</button>
+            <div class="logo-text">ChatCount</div>
+        
+        </div>
+        
+    </div>
+
+    <div class="second-column" *ngIf="showChatDiv()">
+       <app-chat-div></app-chat-div>
+        </div> 
+    
+   
+    
+
+
+    <div class="third-column">
+        <ul class="sidenav-nav">
+            <li class="sidenav-nav-item" *ngFor="let data of navData">
+                <a class="sidenav-nav-link" [routerLink]="[data.routeLink]"
+                   routerLinkActive="active"
+                   [routerLinkActiveOptions]="{exact: true}">
+                    <i class="sidena-link-icon" [class]="data.icon"></i>
+                    <span class="sidenav-link-text" >{{data.label}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>    
+</div>
