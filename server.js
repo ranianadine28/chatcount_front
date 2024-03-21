@@ -2,8 +2,9 @@
 
 var PORT = process.env['PORT'] || 4000;
 
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+
 
 const app = express();
 
