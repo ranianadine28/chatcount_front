@@ -10,11 +10,20 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewchatComponent } from '../chat-div/modal/newchat/newchat.component';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { trigger, transition, style, animate } from '@angular/animations'; // Importation des animations
 
 @Component({
   selector: 'app-chatbot',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms', style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class ChatComponent implements OnInit {
   showContent = true;
@@ -73,6 +82,7 @@ export class ChatComponent implements OnInit {
     this.conversationSubscription = this.chatService.conversation.subscribe(
       (messages) => (this.messages = messages)
     );
+  
     
   }
   
@@ -96,18 +106,7 @@ export class ChatComponent implements OnInit {
       }
     }, () => {});
   }
-  // saveConversation() {
-  //   this.chatService.saveConversation(this.messages, this.conversationId).subscribe(
-  //     (response) => {
-  //       console.log('Conversation enregistrée avec succès:', response);
-  //       this.messages = [];
-  //       console.log("hanii houni",this.conversationId);
-  //     },
-  //     (error) => {
-  //       console.error('Erreur lors de l\'enregistrement de la conversation:', error);
-  //     }
-  //   );
-  // }
+
   sendMessage() {
     if (this.value.trim() !== '') {
       this.chatService.getBotAnswer(this.value, this.conversationId);

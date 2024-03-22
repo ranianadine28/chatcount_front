@@ -2,16 +2,51 @@
   <div class="row">
     <div class="col-12">
       <div class="message-list">
-        <ng-container *ngFor="let message of messages">
-          <div class="message-container">
+        <div class="message-list" *ngIf="conversationId === ':id'">
+          <img src="assets/logo.png" alt="Logo" class="rounded-circle"  height="70" width="70" style="margin-left: 200px; margin-bottom: 20px;">
+
+          <h1 class="title">Comment puis-je vous aider aujourd'hui ?</h1>
+        
+          <div class="card-container">
+            <div class="card">
+                <h2>Optimisation fiscale</h2>
+                <ul>
+                    <li>Pour réduire votre charge fiscale de manière légale</li>
+                    <li>Pour maximiser vos déductions fiscales</li>
+                </ul>
+            </div>
+        
+            <div class="card">
+                <h2>Gestion des finances personnelles</h2>
+                <ul>
+                    <li>Pour organiser vos revenus et dépenses</li>
+                    <li>Pour planifier votre épargne et vos investissements</li>
+                </ul>
+            </div>
+        
+            <div class="card">
+                <h2>Établissement de budgets</h2>
+                <ul>
+                    <li>Pour contrôler vos dépenses professionnelles et personnelles</li>
+                    <li>Pour prévoir et gérer vos flux de trésorerie</li>
+                </ul>
+            </div>
+        </div>
+        
+        </div>
+        
+        
+        <ng-container *ngIf="conversationId !== ':id'">
+          <div *ngFor="let message of messages; let i = index" class="message-container" [@fadeInOut]>
             <div class="message avatar" [ngClass]="{ 'from': message.sender === 'bot', 'to': message.sender === 'user' }">
-              <img *ngIf="message.sender === 'user'"class="rounded-circle"  [src]=" imgPrefix + currentUser?.userInfo?.avatar " alt="avatar" height="40" width="40" alt="Avatar Utilisateur">
-              <img *ngIf="message.sender === 'bot'" class="rounded-circle" src="assets/logo.png" alt="logo" height="40" width="40" alt="Avatar Bot">
+              <img *ngIf="message.sender === 'user'" class="rounded-circle" [src]="imgPrefix + currentUser?.userInfo?.avatar" alt="Avatar Utilisateur" height="40" width="40">
+              <img *ngIf="message.sender === 'bot'" class="rounded-circle" src="assets/logo.png" alt="Avatar Bot" height="40" width="40">
               {{ message.text }}
             </div>
           </div>
         </ng-container>
       </div>
+      
       
       <div class="row message-input-row">
         <div class="col-md-6">

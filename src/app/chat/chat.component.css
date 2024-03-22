@@ -123,3 +123,55 @@
   color: #fff;
   font-size: 12px;
 }
+.title {
+  font-size: 35px;
+  color: #333;
+  
+  margin-bottom: 40px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+.card-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  width: calc(33.333% - 10px);
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+li::before {
+  content: "\2022"; /* Utilisation du caractère bullet pour les listes */
+  color: #666;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
