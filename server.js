@@ -18,12 +18,7 @@ app.use(express.static(path.join(__dirname, 'dist', 'chatcount-front', 'browser'
 app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, 'dist', 'chatcount-front', 'browser', 'index.html'));
 });
-app.get('/auth/login', function(req, res) {
-  });
 
-  app.get('/pages/chat/:id', function(req, res) {
-    // Votre logique de traitement ici
-  });
   
 const server = createServer(app);
 

@@ -154,45 +154,40 @@ export class LoginComponent implements OnInit {
     }
     onRegister(): void {
       this.submitted = true;
-      if (this.registerForm.invalid || !this.registerForm.value.password) {
+      if (this.registerForm.invalid) {
         return;
       }
-    
+  
       this.loading = true;
-    
+
       const { name, email, password, avatar } = this.registerForm.value;
-      console.log(this.registerForm.value.password);
+      
     
-      const formData = new FormData();
-      formData.append('avatar', avatar);
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('password', password); // Ajout du mot de passe
-    
-      this.authService.signUp(formData).subscribe(
-        (response: any) => {
-          if (response.statusCode === 201) {
-            localStorage.setItem('token', response.token);
-            this.toastr.success('Inscription réussie !', 'Succès');
-            this.loading = false;
-            this.router.navigate(['/login']);
-          } else if (response.statusCode === 403) {
-            console.log('L\'utilisateur existe déjà !');
-            this.toastr.error('L\'utilisateur existe déjà !');
-          } else {
-            this.toastr.error('Erreur lors de l\'inscription. Veuillez réessayer.', 'Erreur');
-            this.loading = false;
+      this.authService
+        .signUp(this.file) // Include avatar in the request
+        .subscribe(
+          (response: any) => {
+            if (response.statusCode === 201) {
+              localStorage.setItem('token', response.token);
+              this.toastr.success('Inscription réussie !', 'Succès');
+              this.loading = false;
+              this.router.navigate(['/login']);
+            } else if (response.statusCode === 403) {
+              console.log('L\'utilisateur existe déjà !');
+              this.toastr.error('L\'utilisateur existe déjà !');
+            } else {
+              this.toastr.error('Erreur lors de l\'inscription. Veuillez réessayer.', 'Erreur');
+              this.loading = false;
+            }
+          },
+          (error: any) => {
+            this.toastr.error('Opération échouée', 'Échec', {
+              positionClass: 'toast-bottom-right',
+              toastClass: 'toast ngx-toastr',
+              closeButton: true
+            });
+           this.loading = false;
           }
-        },
-        (error: any) => {
-          this.toastr.error('Opération échouée', 'Échec', {
-            positionClass: 'toast-bottom-right',
-            toastClass: 'toast ngx-toastr',
-            closeButton: true
-          });
-          this.loading = false;
-        }
       );
-    }
-    
+  }
 }  
