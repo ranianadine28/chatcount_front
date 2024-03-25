@@ -184,7 +184,7 @@ export class NewchatComponent {
     if (this.selectedFec && this.currentUser) {
         const conversationName = this.getConversationName();
         console.log("name:", conversationName);
-        this.fecService.ajoutConversation(this.currentUser.userInfo._id, this.selectedFec, conversationName)
+        this.fecService.ajoutConversation(this.currentUser.userInfo._id, this.selectedFec, "new conversation")
             .subscribe(
                 (response) => {
                   
