@@ -39,7 +39,7 @@
         <ng-container *ngIf="conversationId !== ':id'">
           <div *ngFor="let message of messages; let i = index" class="message-container" [@fadeInOut]>
             <div class="message avatar" [ngClass]="{ 'from': message.sender === 'bot', 'to': message.sender === 'user' }">
-              <img *ngIf="message.sender === 'user'" class="rounded-circle" [src]="imgPrefix + currentUser?.userInfo?.avatar" alt="Avatar Utilisateur" height="40" width="40">
+              <img *ngIf="message.sender === 'user'" class="rounded-circle" [src]="currentUser.userInfo.avatar ? imgPrefix + currentUser.userInfo.avatar : 'assets/avatar.jpg'" alt="Avatar Utilisateur" height="40" width="40">
               <img *ngIf="message.sender === 'bot'" class="rounded-circle" src="assets/logo.png" alt="Avatar Bot" height="40" width="40">
               {{ message.text }}
             </div>

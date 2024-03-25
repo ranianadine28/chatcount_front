@@ -176,7 +176,6 @@ export class LoginComponent implements OnInit {
               console.log('L\'utilisateur existe déjà !');
               this.toastr.error('L\'utilisateur existe déjà !');
             } else {
-              this.toastr.error('Erreur lors de l\'inscription. Veuillez réessayer.', 'Erreur');
               this.loading = false;
             }
           },
