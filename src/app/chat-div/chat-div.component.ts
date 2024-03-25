@@ -10,6 +10,7 @@ import { AlertHandlerService } from '../SharedModule/alert_handler.service';
 import { User } from '../authetification/login/model_user';
 import { ConversationService } from '../knowledge/conversation.service';
 import { Conversation } from './conersation-model';
+import { NewchatComponent } from './modal/newchat/newchat.component';
 
 @Component({
   selector: 'app-chat-div', 
@@ -103,30 +104,49 @@ export class ChatDivComponent implements OnInit {
     conversation.newName = ''; 
   }
   addChat() {
-    const userId = this.currentUser?.userInfo._id;
-    const fecId = '65e5a437c9c96fac48007881';
+    const modalRef = this.modal.open(NewchatComponent, {
+      size: 'md',
+      windowClass: 'modal modal-primary'
+    });
+    modalRef.componentInstance.modalMode="add";
 
-    this.historiqueService.startNewConversation(userId!, fecId, "new_conversation").subscribe(
-      (response) => {
-        if (response && response.conversationId) {
-          this.router.navigate(['/pages/chat', response.conversationId]);
-          this.alertServ.alertHandler("Conversation lancée", 'success');
-          
-        } else {
-          console.error('Error creating conversation: Invalid response');
-          this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
-          this.historiqueService.clearMessageHistory();
+    modalRef.result.then(x=>{
+      if(x){
+        this.alertServ.alertHandler("Conversation lancée",'success');
+       
+       // this.showContent = false;
 
-        }
-      },
-      (error) => {
-        console.error('Error creating conversation:', error);
-        this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
       }
-    );
-    //this.scrollToBottom();
+    },
+    ()=>{
 
+    })
   }
+  // addChat() {
+  //   const userId = this.currentUser?.userInfo._id;
+  //   const fecId = '65e5a437c9c96fac48007881';
+
+  //   this.historiqueService.startNewConversation(userId!, fecId, "new_conversation").subscribe(
+  //     (response) => {
+  //       if (response && response.conversationId) {
+  //         this.router.navigate(['/pages/chat', response.conversationId]);
+  //         this.alertServ.alertHandler("Conversation lancée", 'success');
+          
+  //       } else {
+  //         console.error('Error creating conversation: Invalid response');
+  //         this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
+  //         this.historiqueService.clearMessageHistory();
+
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error creating conversation:', error);
+  //       this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
+  //     }
+  //   );
+  //   //this.scrollToBottom();
+
+  // }
   // scrollToBottom(): void {
   //   try {
   //     this.conversationList!.nativeElement.scrollTop = this.conversationList!.nativeElement.scrollHeight;
