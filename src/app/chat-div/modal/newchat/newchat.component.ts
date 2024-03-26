@@ -182,9 +182,7 @@ export class NewchatComponent {
 
   launchDiscussion() {
     if (this.selectedFec && this.currentUser) {
-        const conversationName = this.getConversationName();
-        console.log("name:", conversationName);
-        this.fecService.ajoutConversation(this.currentUser.userInfo._id, this.selectedFec, "new conversation")
+        this.fecService.ajoutConversation(this.currentUser.userInfo._id, this.selectedFec,"new conversation")
             .subscribe(
                 (response) => {
                   
@@ -214,10 +212,6 @@ export class NewchatComponent {
 }
 
     
-    getConversationName(): string {
-      const conversationNameInput = document.getElementById("conversation-name-input") as HTMLInputElement;
-      return conversationNameInput.value;
-    }
-    
+  
   
 }

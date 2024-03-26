@@ -103,55 +103,55 @@ export class ChatDivComponent implements OnInit {
     conversation.isRenaming = false;
     conversation.newName = ''; 
   }
-  // addChat() {
-  //   const modalRef = this.modal.open(NewchatComponent, {
-  //     size: 'md',
-  //     windowClass: 'modal modal-primary'
-  //   });
-  //   modalRef.componentInstance.modalMode="add";
-
-  //   modalRef.result.then(x=>{
-  //     if(x){
-  //       this.alertServ.alertHandler("Conversation lancée",'success');
-       
-  //      // this.showContent = false;
-
-  //     }
-  //   },
-  //   ()=>{
-
-  //   })
-  // }
   addChat() {
-    const userId = this.currentUser?.userInfo._id;
-    const fecId = '65e5a437c9c96fac48007881';
+    const modalRef = this.modal.open(NewchatComponent, {
+      size: 'md',
+      windowClass: 'modal modal-primary'
+    });
+    modalRef.componentInstance.modalMode="add";
 
-    this.historiqueService.startNewConversation(userId!, fecId, "new_conversation").subscribe(
-      (response) => {
-        if (response && response.conversationId) {
-          this.router.navigate(['/pages/chat', response.conversationId]);
-          this.alertServ.alertHandler("Conversation lancée", 'success');
-          
-        } else {
-          console.error('Error creating conversation: Invalid response');
-          this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
-          this.historiqueService.clearMessageHistory();
+    modalRef.result.then(x=>{
+      if(x){
+        this.alertServ.alertHandler("Conversation lancée",'success');
+       
+       // this.showContent = false;
 
-        }
-      },
-      (error) => {
-        console.error('Error creating conversation:', error);
-        this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
       }
-    );
-    //this.scrollToBottom();
+    },
+    ()=>{
 
+    })
   }
-  // scrollToBottom(): void {
-  //   try {
-  //     this.conversationList!.nativeElement.scrollTop = this.conversationList!.nativeElement.scrollHeight;
-  //   } catch(err) { }
+  // addChat() {
+  //   const userId = this.currentUser?.userInfo._id;
+  //   const fecId = '65e5a437c9c96fac48007881';
+
+  //   this.historiqueService.startNewConversation(userId!, fecId, "new_conversation").subscribe(
+  //     (response) => {
+  //       if (response && response.conversationId) {
+  //         this.router.navigate(['/pages/chat', response.conversationId]);
+  //         this.alertServ.alertHandler("Conversation lancée", 'success');
+          
+  //       } else {
+  //         console.error('Error creating conversation: Invalid response');
+  //         this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
+  //         this.historiqueService.clearMessageHistory();
+
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error creating conversation:', error);
+  //       this.alertServ.alertHandler("Erreur lors de la création de la conversation", 'error');
+  //     }
+  //   );
+  // this.scrollToBottom();
+
   // }
+  scrollToBottom(): void {
+    try {
+      this.conversationList!.nativeElement.scrollTop = this.conversationList!.nativeElement.scrollHeight;
+    } catch(err) { }
+  }
 
   startRenaming(conversation: any): void {
     conversation.isRenaming = true;
