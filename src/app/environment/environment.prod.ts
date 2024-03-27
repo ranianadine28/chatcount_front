@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
     hmr: false,
-    apiUrl: 'http://localhost:7001'
+    apiUrl: 'https://backend-prod-chatcount.onrender.com/'
   };
