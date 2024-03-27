@@ -13,11 +13,13 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'dist', 'chatcount-front', 'browser')));
 
-app.use(express.static(__dirname + '/dist/browser/chatcount-front'));
-app.get('/*', function(req,res) {
-res.sendFile(path.join(__dirname+
-'/dist/chatcount-front/browser/index.html'));});
+app.get('/*', function(req, res) {
+    console.log('Received request for:', req.url); 
+    res.sendFile(path.join(__dirname, 'dist', 'chatcount-front', 'browser', 'index.html'));
+});
+
 // Middleware pour gérer les erreurs 404
 app.use(function(req, res, next) {
     res.status(404).send("Sorry, can't find that!");
