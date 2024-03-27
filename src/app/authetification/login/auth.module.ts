@@ -6,7 +6,7 @@ import { SharedModule } from '../../SharedModule/shared.module';
 
 
 // routing
-const routes: Routes = [
+const approutes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
@@ -19,6 +19,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [SharedModule,RouterModule.forChild(routes)]
+  imports: [SharedModule,RouterModule.forChild(approutes)]
 })
 export class AuthenticationModule {}

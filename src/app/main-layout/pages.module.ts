@@ -15,7 +15,7 @@ import { NgbDropdown, NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-boot
 
 
 
-const routes: Routes = [
+const mainroutes: Routes = [
  
     {
         path: '',
@@ -85,7 +85,7 @@ const routes: Routes = [
     ],
     imports: [
       SharedModule,
-      RouterModule.forChild(routes),
+      RouterModule.forChild(mainroutes),
       NgbModule,
       NgbDropdownModule,
 
