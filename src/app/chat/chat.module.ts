@@ -7,9 +7,9 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NewchatComponent } from '../chat-div/modal/newchat/newchat.component';
 import { ToastrModule, provideToastr } from 'ngx-toastr';
-import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog'; 
 import { ConfirmmodalComponentj } from '../chat-div/modal/confirmmodal/confirmmodal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   {
@@ -26,7 +26,7 @@ const routes: Routes = [
     NgbDropdownModule,
     NgbModule,  
     MatDialogModule,
-    BrowserAnimationsModule
+    //BrowserAnimationsModule
 
 
 
