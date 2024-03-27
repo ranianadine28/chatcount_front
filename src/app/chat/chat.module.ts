@@ -9,8 +9,8 @@ import { NewchatComponent } from '../chat-div/modal/newchat/newchat.component';
 import { ToastrModule, provideToastr } from 'ngx-toastr';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog'; 
-import { ConfirmmodalComponent } from '../chat-div/modal/confirmmodal/confirmmodal.component';
-import { ConfirmActionModalComponent } from '../SharedModule/modals/confirm-action-modal/confirm-action-modal.component';
+import { ConfirmmodalComponentj } from '../chat-div/modal/confirmmodal/confirmmodal.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -26,15 +26,16 @@ const routes: Routes = [
     NgbDropdownModule,
     NgbModule,  
     MatDialogModule,
+    BrowserAnimationsModule
 
 
 
   ],
-  declarations: [ChatComponent,FileUploadComponent],
+  declarations: [ChatComponent,FileUploadComponent,ConfirmmodalComponentj],
   providers: [ChatService, 
-  // provideAnimations(), 
+  //provideAnimations(), 
  provideToastr(),
-ConfirmActionModalComponent],
+],
   
 })
 

@@ -7,11 +7,14 @@ import { isPlatformBrowser } from '@angular/common';
 import { User } from '../../../authetification/login/model_user';
 import { ToastrService } from 'ngx-toastr';
 import { NavigationExtras, Router } from '@angular/router'; // Importer le Router
-import { ConfirmmodalComponent } from '../confirmmodal/confirmmodal.component';
 import { MatDialog ,MatDialogRef} from '@angular/material/dialog';
-import { ConfirmActionModalComponent } from '../../../SharedModule/modals/confirm-action-modal/confirm-action-modal.component';
 import { response } from 'express';
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../../environment/environment';
+import io from 'socket.io-client';
+import { Fec } from '../../../chat/file-upload/fec-model';
+import { ConfirmmodalComponentj } from '../confirmmodal/confirmmodal.component';
+
 interface UploadResponse {
   message: string;
   data: any; // Utilisez le type approprié pour vos données
@@ -25,11 +28,13 @@ interface UploadResponse {
 })
 export class NewchatComponent {
   fecs!: any[];
-  selectedFec: any;
+  selectedFec: Fec | undefined;
   public currentUser: User | null = null;
-  dialogRef!: MatDialogRef<ConfirmActionModalComponent>;
   conversationName: string = '';
   showPreviousComponent: boolean = false;
+  private socket: any;
+
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private router: Router,
@@ -40,7 +45,16 @@ export class NewchatComponent {
     @Inject(PLATFORM_ID) private platformId: Object,
     private dialog: MatDialog ,
     
-  ) {}
+  ) {
+    this.socket = io(environment.apiUrl);
+      this.socket.on('connect_error', (error: any) => {
+        console.error('Error connecting to socket:', error);
+      });
+  
+      this.socket.on('error', (error: any) => {
+        console.error('Error sending message:', error);
+      });
+  }
 
   ngOnInit(): void {
     this.getFecs();
@@ -75,61 +89,73 @@ export class NewchatComponent {
   handleFileUpload(file: File) {
     this.fecService.uploadFile(file).subscribe(
       (response: any) => {
-        console.log("Response status:", response.status);
-
-        if (response.status === 409) {
-          console.log("rrrrrrrrrrrrrrrrrrrrrrrrr", response.status);
-          this.openConfirmReplaceDialog(file, response.fecId!);
+        console.log("Response:", response);
+  
+        if (response && response.message && response.fecId) {
+          if (response.message === "Un fichier avec le même nom existe déjà.") {
+            console.log("Fichier déjà existant:", response.message);
+            this.openConfirmReplaceDialog(file, response.fecId);
+          } else {
+            this.alertServ.alertHandler(
+              response.message,
+              "success"
+            );
+            this.toastr.success(response.message, 'Succès',
+              {
+                positionClass: 'toast-bottom-right',
+                toastClass: 'toast ngx-toastr',
+                closeButton: true
+              });
+          }
         } else {
-          this.alertServ.alertHandler(
-            response.message!,
-            "success"
-          );
-          this.toastr.success(response.message, 'Succès',
-            {
-              positionClass: 'toast-bottom-right',
-              toastClass: 'toast ngx-toastr',
-              closeButton: true
-            });
+          console.warn("Réponse invalide:", response);
         }
       },
-      error => {
+      (error: HttpErrorResponse) => {
         console.error("File upload error:", error); // Log l'erreur
   
-        if (error.error && error.error.message) {
-          this.alertServ.alertHandler(
-            error.error.message,
-            "error"
-          );
+        if (error.status === 409) {
+          console.log("Fichier déjà existant:", error.error.message);
+          this.openConfirmReplaceDialog(file, error.error.fecId);
         } else {
-          this.alertServ.alertHandler(
-            "Une erreur inconnue s'est produite lors du chargement du fichier.",
-            "error"
-          );
+          if (error.error && error.error.message) {
+            this.alertServ.alertHandler(
+              error.error.message,
+              "error"
+            );
+          } else {
+            this.alertServ.alertHandler(
+              "Une erreur inconnue s'est produite lors du chargement du fichier.",
+              "error"
+            );
+          }
         }
       }
     );
   }
   
   
-  
-  openConfirmReplaceDialog(file: File, existingFecId: string) {
-    console.log("heloooooooooooooooooooooo");
-    this.dialogRef = this.dialog.open(ConfirmActionModalComponent, {
-      data: {
-        file: file,
-        existingFecId: existingFecId 
-      }
-    });
+openConfirmReplaceDialog(file: File, existingFecId: string) {
+  console.log("Ouverture de la boîte de dialogue de confirmation pour le remplacement du fichier.");
+  const dialogRef = this.dialog.open(ConfirmmodalComponentj, {
+    data: {
+      message: "Un fichier avec le même nom existe déjà. Voulez-vous le remplacer ?",
+      confirmText: "Confirmer",
+      cancelText: "Annuler"
+    }
     
-    this.dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.replaceFile(existingFecId, file);
-      }
-    });
-  }
+  });
 
+  dialogRef.afterClosed().subscribe((confirmed) => {
+    if (confirmed) {
+      this.replaceFile(existingFecId, file);
+    } else {
+      // Annuler l'action
+    }
+  });
+}
 
+  
   replaceFile(existingFecId: string, file: File) {
     this.fecService.replaceFile(existingFecId, file).subscribe(
       response => {
@@ -182,7 +208,7 @@ export class NewchatComponent {
 
   launchDiscussion() {
     if (this.selectedFec && this.currentUser) {
-        this.fecService.ajoutConversation(this.currentUser.userInfo._id, this.selectedFec,"new conversation")
+        this.fecService.ajoutConversation(this.currentUser.userInfo._id, this.selectedFec!._id,"new conversation")
             .subscribe(
                 (response) => {
                   
@@ -197,7 +223,10 @@ export class NewchatComponent {
                     // Naviguer vers la nouvelle page et effacer l'historique de navigation
                
                       this.router.navigate(['/pages/chat', response.conversationId]);
-                    
+                      this.socket.emit("launch_success", { fecName: this.selectedFec!.name });
+                      console.log("Selected FEC:", this.selectedFec);
+console.log("Selected FEC name:", this.selectedFec!.name);
+
                   
                 },
                 (error) => {

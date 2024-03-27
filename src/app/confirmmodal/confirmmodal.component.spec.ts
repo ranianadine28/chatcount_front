@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfirmmodalComponentj } from './confirmmodal.component'; // Utilisation du nom correct du composant
-import { ConfirmmodalComponent } from '../../../confirmmodal/confirmmodal.component';
+
+import { ConfirmmodalComponent } from './confirmmodal.component';
 
 describe('ConfirmmodalComponent', () => {
   let component: ConfirmmodalComponent;

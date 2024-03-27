@@ -17,13 +17,13 @@ import { trigger, transition, style, animate } from '@angular/animations'; // Im
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
   animations: [
-    trigger('fadeInOut', [
+    trigger('messageAnimation', [
       transition(':enter', [
-        style({ opacity: 0 }),
-        animate('300ms', style({ opacity: 1 })),
-      ]),
-    ]),
-  ],
+        style({ opacity: 0, transform: 'translateY(50px)' }),
+        animate('300ms', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class ChatComponent implements OnInit {
   showContent = true;
@@ -110,6 +110,7 @@ export class ChatComponent implements OnInit {
   sendMessage() {
     if (this.value.trim() !== '') {
       this.chatService.getBotAnswer(this.value, this.conversationId);
+      
       console.log("currentUser",this.currentUser);
       console.log(this.value);
       this.value = '';

@@ -21,7 +21,15 @@ export class ChatService {
 
   constructor(private http: HttpClient, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object) {
     this.socket = io(environment.apiUrl);
+      this.socket.on('connect_error', (error: any) => {
+        console.error('Error connecting to socket:', error);
+      });
+  
+      this.socket.on('error', (error: any) => {
+        console.error('Error sending message:', error);
+      });
   }
+
   getBotAnswer(msg: string, conversationId: string) {
     const userMessage = new Message('user', msg);
     this.conversation.next([userMessage]);
