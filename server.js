@@ -15,10 +15,11 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'dist', 'chatcount-front', 'browser')));
 
-app.get('/*', function(req, res) {
-    console.log('Received request for:', req.url); 
+
+app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname, 'dist', 'chatcount-front', 'browser', 'index.html'));
 });
+
 
 // Middleware pour gérer les erreurs 404
 app.use(function(req, res, next) {
