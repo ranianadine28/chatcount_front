@@ -70,7 +70,6 @@ export class SidenavComponent implements OnInit {
   ngOnInit(): void {
   
     this.collapsed = true;
-
   }
 
 

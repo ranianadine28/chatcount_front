@@ -11,6 +11,7 @@ import { User } from '../authetification/login/model_user';
 import { ConversationService } from '../knowledge/conversation.service';
 import { Conversation } from './conersation-model';
 import { NewchatComponent } from './modal/newchat/newchat.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-chat-div', 
@@ -35,6 +36,8 @@ export class ChatDivComponent implements OnInit {
     private router: Router,
     private fecService: FecService,
     private historiqueService: ConversationService,
+    private dialog: MatDialog ,
+
   ) {}
 
 
@@ -104,23 +107,14 @@ export class ChatDivComponent implements OnInit {
     conversation.newName = ''; 
   }
   addChat() {
-    const modalRef = this.modal.open(NewchatComponent, {
-      size: 'md',
-      windowClass: 'modal modal-primary'
+    const dialogRef = this.dialog.open(NewchatComponent, {
+      width: '100%',
+      height: '100%'
     });
-    modalRef.componentInstance.modalMode="add";
 
-    modalRef.result.then(x=>{
-      if(x){
-        this.alertServ.alertHandler("Conversation lancée",'success');
-       
-       // this.showContent = false;
-
-      }
-    },
-    ()=>{
-
-    })
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
   // addChat() {
   //   const userId = this.currentUser?.userInfo._id;

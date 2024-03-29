@@ -136,6 +136,17 @@
   margin-bottom: 20px;
 }
 
+.fec-name {
+  text-align: right;
+  font-size: 40px;
+
+}
+
+.font-italic {
+  font-style: bold;
+  color: #030640;
+  
+}
 
 
 

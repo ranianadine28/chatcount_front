@@ -33,7 +33,7 @@ export class ChatComponent implements OnInit {
   public noConversationId: boolean = false;
   recording = false; 
   public conversationExists: boolean = false;
-
+  fecName :string | undefined;
   currentUser: User | null = null;
   conversationSubscription: Subscription | undefined;
   conversationId!: string;
@@ -69,6 +69,15 @@ export class ChatComponent implements OnInit {
     if (this.conversationId) {
       this.conversationExists = true; 
       this.loadConversationMessages(this.conversationId);
+      this.chatService.getFecName(this.conversationId).subscribe(
+        fecName => {
+          console.log("Nom du FEC reçu :", fecName);
+          this.fecName = fecName; // Mettez à jour la propriété fecName
+        },
+        error => {
+          console.error("Erreur lors de la récupération du nom du FEC :", error);
+        }
+      );
     } else {
       this.conversationExists = false; 
     }

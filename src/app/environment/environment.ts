@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://backend-prod-chatcount.onrender.com'
+  apiUrl: 'http://localhost:7001'
 };

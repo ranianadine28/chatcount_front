@@ -7,6 +7,7 @@ import { AlertHandlerService } from '../SharedModule/alert_handler.service';
 import { Conversation } from '../chat-div/conersation-model';
 import { User } from '../authetification/login/model_user';
 import { AuthService } from '../authetification/auth.service';
+import { map } from 'rxjs/operators'; // Importez les opérateurs map et catchError
 
 export class Message {
   constructor(public sender: string | undefined, public text: string) {}
@@ -34,6 +35,15 @@ export class ChatService {
     const userMessage = new Message('user', msg);
     this.conversation.next([userMessage]);
     this.socket.emit('message', { text: msg, conversationId }); // Envoyer le message de l'utilisateur au backend
+  }
+  getFecName(conversationId: string): Observable<string> {
+    return this.http.get<{ fecName: string }>(`${this.apiUrl}/fec/getFecName/${conversationId}`).pipe(
+      map(response => response.fecName),
+      catchError(error => {
+        console.error("Erreur lors de la récupération du nom du FEC :", error);
+        return throwError("Erreur lors de la récupération du nom du FEC");
+      })
+    );
   }
   
  

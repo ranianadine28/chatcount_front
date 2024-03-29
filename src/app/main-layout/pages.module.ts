@@ -24,15 +24,6 @@ const mainroutes: Routes = [
         component: MainLayoutComponent,
         children: [
           {
-            path: 'dashboard',
-            loadChildren:()=> import('../dashboard/dashboard.module').then(m=> m.DashboardManagementModule),
-            data: {
-              role: {
-                page: 'dashboard',
-              }
-            },
-          },
-          {
             path:  'chat/:id',
             loadChildren:()=> import('../chat/chat.module').then(m=> m.ChatManagementModule),
             data: {
@@ -41,6 +32,16 @@ const mainroutes: Routes = [
               }
             },
           },
+          {
+            path: 'dashboard',
+            loadChildren:()=> import('../dashboard/dashboard.module').then(m=> m.DashboardManagementModule),
+            data: {
+              role: {
+                page: 'dashboard',
+              }
+            },
+          },
+          
           {
             path:  'chat',
             loadChildren:()=> import('../initchat/initchat.module').then(m=> m.InitChatManagementModule),
