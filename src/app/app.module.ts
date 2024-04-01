@@ -12,7 +12,7 @@ import { SharedModule } from './SharedModule/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ChatService } from './chat/chatbot.service';
 
-
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 const appRoutes: Routes = [
   {
     path: '',
@@ -55,7 +55,8 @@ const appRoutes: Routes = [
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),
-    ChatService
+    ChatService,
+    {provide: LocationStrategy , useClass: HashLocationStrategy}
 
   ],
   bootstrap: [AppComponent]
