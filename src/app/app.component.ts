@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { EnvironmentService } from '../enviroment.service';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +6,5 @@ import { EnvironmentService } from '../enviroment.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  baseHref: string | undefined;
-  constructor(private environmentService: EnvironmentService) {}
-
-  ngOnInit() {
-    this.baseHref = this.environmentService.getBaseHref();
-  }
+ 
 }
