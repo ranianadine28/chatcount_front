@@ -120,7 +120,7 @@ export class LoginComponent implements OnInit {
       (response: any) => {
         if (response.token) {
           localStorage.setItem('token', response.token);
-          this.router.navigate(['/pages']);
+          this.router.navigate(['/pages/chat/:id']);
           // Affichez une notification de succès si la connexion réussit
           this.toastr.success('Connexion réussie !', 'Succès');
         } else {
