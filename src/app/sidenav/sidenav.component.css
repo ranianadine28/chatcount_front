@@ -11,7 +11,6 @@
     .logo-container{
          display: flex;
          align-items: center;
-         padding: 0.938rem 0.938rem 0 0.938rem ;
          width: 100%;
 
         .logo{
@@ -32,7 +31,7 @@
             margin-left: 3rem;
             font-size: 24px;
             font-weight: 700;
-            color: #fbf4d5;
+            color: #f6f2e3;
 
         }
 
@@ -73,7 +72,7 @@
         display: flex;
         align-items: center;
         height: 3rem;
-        color: #f3f3f3;
+        color: #f6f2e3;
         text-decoration: none;
         border-radius: 0.625rem;
         transition: all .3s ease;
@@ -96,18 +95,21 @@
 }
 .sidenav-nav-item:hover{
   .sidenav-nav-link{
-    background-color: #fff;
+    background-color: #ffffff52;
     color: #030640;
 
   }
 }
 }
 .active {
-    background-color: #fff;
-
+    background-color: #00bda700; 
+    color: #f6f2e3;
+     border-radius: 25px; 
+     border: 2px solid #f6f2e3;
+      padding: 6px 25px;
     .sidena-link-icon,
     .sidenav-link-text{
-        color: #030640;
+        color: #ffffff;
     }
 }
 
