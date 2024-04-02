@@ -13,9 +13,7 @@
          align-items: center;
          padding: 0.938rem 0.938rem 0 0.938rem ;
          width: 100%;
-         div.logo-container {
-            display: none;
-          }
+        display: none;
 
         .logo{
              background: #F2F2F2;
