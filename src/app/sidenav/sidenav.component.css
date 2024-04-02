@@ -14,19 +14,20 @@
          padding: 0.938rem 0.938rem 0 0.938rem ;
          width: 100%;
 
-        .logo{
-             background: #F2F2F2;
-             text-align: center;
-             width: 3rem;
-             min-width: 3rem;
-             border-radius: 0.313rem;
-             padding: 0.313rem;
-             font-size: 24px;
-             font-weight: 900;
-             cursor: pointer;
-             border: none;
-
+         .logo {
+            background-image: url('assets/logo.png');
+            background-size: cover;
+            text-indent: -9999px; /* Cacher le texte "C" */
+            width: 3rem; /* Même largeur que l'image */
+            height: 3rem; /* Même hauteur que l'image */
+            border-radius: 0.313rem;
+            padding: 0.313rem;
+            font-size: 24px;
+            font-weight: 900;
+            cursor: pointer;
+            border: none;
         }
+        
 
         .logo-text {
             margin-left: 1.5rem;
