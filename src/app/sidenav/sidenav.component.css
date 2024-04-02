@@ -131,3 +131,7 @@
 .second-column {
     flex: 1;
 }
+.logo-image {
+    background-image: url('../assets/logo.png');
+    background-size: cover; 
+}
