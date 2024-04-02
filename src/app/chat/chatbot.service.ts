@@ -17,6 +17,7 @@ export class Message {
 export class ChatService {
   private socket: any;
   conversation = new Subject<Message[]>();
+  private fecName: string | undefined;
 
   private apiUrl = environment.apiUrl;
 
@@ -48,12 +49,21 @@ export class ChatService {
   
  
   initSocketListeners(conversationId: string) {
+    // Écouter l'événement 'fetchFecName' pour récupérer le nom FEC
+    this.socket.emit('fetchFecName', conversationId);
+
     this.socket.on('message', (data: any) => {
       const botMessage = new Message('bot', data);
-      this.conversation.next([botMessage]); 
-     // this.saveMessageToDatabase('bot', data, conversationId); 
-      console.log("id",conversationId);
+      this.conversation.next([botMessage]);
+      // this.saveMessageToDatabase('bot', data, conversationId);
+      console.log("id", conversationId);
       console.log(data);
+    });
+
+    // Écouter la réponse pour le nom FEC
+    this.socket.on('fecName', (fecName: string) => {
+      this.fecName = fecName;
+      console.log('FEC name:', fecName);
     });
   }
   
