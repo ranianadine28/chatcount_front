@@ -45,7 +45,7 @@
             </div>
           </div>
         
-          <div class="row">
+          <div class="messages-wrapper">
             <div class="col">
               <div *ngFor="let message of messages" [@messageAnimation]="true" class="message-container">
                 <div class="message " [ngClass]="{ 'from': message.sender === 'bot', 'to': message.sender === 'user' }">

@@ -14,10 +14,13 @@
       <h3>Sélectionnez un FEC</h3>
       <ul>
         <li *ngFor="let fec of fecs">
-          <label>
-            <input type="radio" name="selectedFec" [(ngModel)]="selectedFec" [value]="fec">
-            {{ fec.name }}
-          </label>
+          <div class="d-flex  align-items-center">
+            <label class="fec-name">
+              <input type="radio" name="selectedFec" [(ngModel)]="selectedFec" [value]="fec">
+              {{ fec.name }}
+            </label>
+            <i class="fa fa-trash-alt margin-right" style="cursor: pointer;" (click)="deleteFec(fec._id)"></i>
+          </div>
         </li>
       </ul>
     </div>

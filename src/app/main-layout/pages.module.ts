@@ -85,6 +85,7 @@ const mainroutes: Routes = [
         
     ],
     imports: [
+      
       SharedModule,
       RouterModule.forChild(mainroutes),
       NgbModule,

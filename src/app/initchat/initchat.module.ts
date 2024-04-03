@@ -30,7 +30,7 @@ const routes: Routes = [
   ],
   declarations: [InitchatComponent,NewchatComponent],
 
-  providers: [ provideAnimations(), // required animations providers
+  providers: [ //provideAnimations(), // required animations providers
   provideToastr(),],
     // Toastr providers
   

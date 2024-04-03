@@ -64,7 +64,6 @@ export class NewchatComponent {
 
 
   ngOnInit(): void {
-    this.getFecs();
 
     if (isPlatformBrowser(this.platformId)) {
       this.authService.retrieveCurrentUserFromLocalStorage();
@@ -72,6 +71,8 @@ export class NewchatComponent {
         this.currentUser = user;
       });
     }
+    this.getFecs();
+
   }
   confirmReplace() {
     this.dialogRef.close(true);
@@ -81,9 +82,11 @@ export class NewchatComponent {
     this.dialogRef.close(false);
   }
   getFecs(): void {
-    this.fecService.getFecs().subscribe(
+    this.fecService.getFecs(this.currentUser?.userInfo._id!).subscribe(
       response => {
         this.fecs = response.data;
+        console.log(this.currentUser?.userInfo._id!);
+
       },
       error => {
         this.alertServ.alertHandler(
@@ -97,6 +100,7 @@ export class NewchatComponent {
         );
       }
     );
+    console.log("ttttttttttttttttttttttt",this.currentUser?.userInfo._id);
   }
 closemodal(){
   var modal=document.getElementById("modal1");
@@ -104,7 +108,7 @@ closemodal(){
 }
 
   handleFileUpload(file: File) {
-    this.fecService.uploadFile(file).subscribe(
+    this.fecService.uploadFile(file,this.currentUser?.userInfo._id!).subscribe(
       (response: any) => {
         console.log("Response:", response);
   
@@ -153,6 +157,8 @@ closemodal(){
         }
       }
     );
+    console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrr",this.currentUser?.userInfo._id);
+
   }
   
   confirmAction(){
@@ -244,6 +250,17 @@ closePopup(){
   this.dialogRef.close(true);
 }
     
-  
+deleteFec(fecId: string): void {
+  this.fecService.deleteFec(fecId).subscribe(
+    () => {
+      this.getFecs();
+      console.log('fec supprimé avec succès');
+    },
+    error => {
+      console.error('Erreur lors de la suppression du fec :', error);
+    }
+  );
+}
+
   
 }

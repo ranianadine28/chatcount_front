@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FecService } from './file-upload.service';
+import { User } from '../../authetification/login/model_user';
+import { isPlatformBrowser } from '@angular/common';
+import { AuthService } from '../../authetification/auth.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -8,10 +11,22 @@ import { FecService } from './file-upload.service';
 })
 export class FileUploadComponent implements OnInit {
   selectedFile: File | null = null;
+  public currentUser: User | null = null;
 
-  constructor(private fecService: FecService) {}
+  constructor(private fecService: FecService,
+    private authService: AuthService,
 
-  ngOnInit() {}
+    @Inject(PLATFORM_ID) private platformId: Object,
+    ) {}
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.authService.retrieveCurrentUserFromLocalStorage();
+      this.authService.currentUser$.subscribe(user => {
+        this.currentUser = user;
+      });
+    }
+  }
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -19,7 +34,7 @@ export class FileUploadComponent implements OnInit {
 
   uploadFile() {
     if (this.selectedFile) {
-      this.fecService.uploadFile(this.selectedFile)
+      this.fecService.uploadFile(this.selectedFile,this.currentUser?.userInfo._id!)
         .subscribe((response) => {
           console.log(response); // Handle response from backend (optional)
           this.selectedFile = null; // Clear selection after successful upload

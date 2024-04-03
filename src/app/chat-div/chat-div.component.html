@@ -15,9 +15,7 @@
         <i class="fas fa-ellipsis-v" style="margin-left: 20px;" (click)="toggleDropdown(conversation)"></i>
         <div *ngIf="conversation.showDropdown" class="dropdown-menu" style="border-top: none;">
           <ul>
-            <li (click)="startRenaming(conversation)">
-              <i class="fas fa-pencil-alt" style="margin-right: 8px; color: #030640;"></i> Renommer
-            </li>
+          
             <li (click)="onDeleteConversation(conversation._id)">
               <i class="fas fa-trash-alt" style="margin-right: 8px; color: #030640;"></i> Supprimer
             </li>

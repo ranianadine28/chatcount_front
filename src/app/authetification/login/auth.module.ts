@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login.component';
 import { SharedModule } from '../../SharedModule/shared.module';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 // routing
@@ -17,8 +18,10 @@ const approutes: Routes = [
 
 ];
 
+
 @NgModule({
   declarations: [LoginComponent],
-  imports: [SharedModule,RouterModule.forChild(approutes)]
+  imports: [SharedModule,RouterModule.forChild(approutes),
+    MatSnackBarModule]
 })
 export class AuthenticationModule {}

@@ -61,6 +61,7 @@ margin-bottom: 10px;
     font-weight: bold; /* Gras */
     margin-bottom: 10px; /* Marge en bas */
 }
+
 .overlay {
   position: fixed;
   top: 0;
@@ -72,6 +73,12 @@ margin-bottom: 10px;
   z-index: 1000; /* Assure que la superposition est au-dessus de tout le contenu */
   display: none; /* Initialement caché */
 }
+
+.margin-right {
+  margin-left: 5px; 
+}
+
+
 
 .overlay.active {
   display: flex; /* Afficher la superposition lorsque active */

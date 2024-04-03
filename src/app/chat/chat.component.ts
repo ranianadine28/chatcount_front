@@ -47,6 +47,7 @@ export class ChatComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router,
+    
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     

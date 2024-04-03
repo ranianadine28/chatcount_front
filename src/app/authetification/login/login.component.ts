@@ -8,11 +8,13 @@ import { AuthService } from '../auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { AlertHandlerService } from '../../SharedModule/alert_handler.service';
 import { register } from 'module';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
@@ -32,6 +34,7 @@ export class LoginComponent implements OnInit {
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private router: Router,
+    private _snackBar: MatSnackBar,
     private alertServ: AlertHandlerService
 
   ) {
@@ -168,8 +171,12 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (response: any) => {
             if (response.statusCode === 201) {
+              this._snackBar.open('Inscription réussie ! Vous pouvez maintenant vous connecter.', 'Fermer', {
+                duration: 5000, // Durée d'affichage en ms
+              });
               localStorage.setItem('token', response.token);
-              this.toastr.success('Inscription réussie !', 'Succès');
+              this.toastr.success('Vous avez créé votre compte avec succès. Vous pouvez maintenant passer à la connexion.', 'Inscription réussie');
+
               this.loading = false;
               this.router.navigate(['/login']);
             } else if (response.statusCode === 403) {

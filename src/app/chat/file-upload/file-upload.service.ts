@@ -15,17 +15,22 @@ export class FecService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
-  getFecs(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/fec/getCsv`);
+  getFecs(userId: string | null): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/fec/getCsv/${userId}`);
   }
-  uploadFile(file: File): Observable<UploadResponse> {
+  
+  uploadFile(file: File, userId: string | null): Observable<UploadResponse> {
     const formData = new FormData();
     formData.append('csvFile', file);
   
-    const headers = new HttpHeaders();
-    headers.set('Content-Type', 'multipart/form-data');
+    const headers = new HttpHeaders(); 
+    headers.set('Content-Type', 'multipart/form-data'); 
   
-    return this.http.post<UploadResponse>(`${this.apiUrl}/fec/uploadCsv`, formData, { headers })
+    const options = {
+      headers: headers
+    };
+  
+    return this.http.post<UploadResponse>(`${this.apiUrl}/fec/uploadCsv/${userId}`, formData, options)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           // Gérer l'erreur HTTP ici
@@ -55,5 +60,14 @@ export class FecService {
     const body = { conversationName }; 
     return this.http.post<any>(`${this.apiUrl}/conversation/conversations/${userId}/${fecId}`, body)
   }
+  deleteFec(fecId: string): Observable<UploadResponse> {
+    return this.http.delete<UploadResponse>(`${this.apiUrl}/fec/deletefec/${fecId}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error); 
+        })
+      );
+  }
+  
   
 }

@@ -2,6 +2,7 @@
   max-width: 800px; /* ajustez la largeur selon vos besoins */
   margin: 0 auto; /* centre le conteneur horizontalement */
   padding: 20px;
+  overflow: hidden;
 }
 
 .message {
@@ -40,10 +41,35 @@
   color: white; /* Couleur du texte du bouton */
   border: 2px solid #030640; /* Bordure du bouton */
 }
-.message-input-row {
-  display: flex; /* Make the row a flex container */
-  justify-content: space-between; /* Align items at both ends */
+.message-container {
+  overflow-y: auto;
+  max-height: calc(100vh - 250px); /* Ajustez selon vos besoins */
 }
+
+.message-input-row {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 1000;
+  padding: 10px;
+}
+
+.messages-wrapper {
+height: 450px;
+margin-bottom: 80px;
+  scrollbar-color:hsla(0, 0%, 95%, 0.707) hsla(240, 4%, 86%, 0); 
+  scrollbar-width: thin;
+  max-height: calc(100vh - 150px); 
+  overflow-y: auto;
+}
+html, body {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Pour empêcher tout défilement de la page */
+}
+
 .btn-outline-primary {
     background: #030640!;
     border-radius: 15px;
@@ -148,6 +174,7 @@
   font-size: 15px;
   color: #a9aabd;
   font-style: bold;
+  
 
 }
 
