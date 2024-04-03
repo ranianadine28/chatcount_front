@@ -38,6 +38,8 @@ export class ChatComponent implements OnInit {
   conversationSubscription: Subscription | undefined;
   conversationId!: string;
   selectBConvContent:string = '';
+  feedbackType: 'like' | 'dislike' | 'comment' | null = null;
+  selectedMessageId: string | null = null;
   @ViewChild('audioRecorder', {static: false}) audioRecorder!: ElementRef<HTMLAudioElement>; 
 
   constructor(
@@ -115,6 +117,28 @@ export class ChatComponent implements OnInit {
       this.showContent = false;
       }
     }, () => {});
+  }
+  sendFeedback(type: 'like' | 'dislike' | 'comment', messageId: string) {
+    this.feedbackType = type;
+    this.selectedMessageId = messageId;
+    // Vous pouvez mettre en œuvre la logique supplémentaire ici, comme l'affichage d'une boîte de dialogue pour le commentaire
+  }
+  submitFeedback(comment: string) {
+    if (this.feedbackType && this.selectedMessageId) {
+      // Envoyer le feedback au service
+      // Vous pouvez appeler le service ici pour envoyer le feedback au serveur
+      console.log('Feedback type:', this.feedbackType);
+      console.log('Selected message ID:', this.selectedMessageId);
+      console.log('Comment:', comment);
+      // Réinitialiser les variables de feedback après envoi
+      this.feedbackType = null;
+      this.selectedMessageId = null;
+    }
+  }
+  cancelFeedback() {
+    // Réinitialiser les variables de feedback
+    this.feedbackType = null;
+    this.selectedMessageId = null;
   }
 
   sendMessage() {

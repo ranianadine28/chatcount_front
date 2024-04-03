@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class LoginComponent implements OnInit {
    public loginForm: FormGroup;
   registerForm: FormGroup;
+  isPopupOpen = false;
 
   loading = false;
   submitted = false;

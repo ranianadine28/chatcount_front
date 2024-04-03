@@ -24,6 +24,12 @@
         </li>
       </ul>
     </div>
+    <div class="overlay" [class.active]="isPopupOpen2">
+      <div class="popup">
+        <i class="fa fa-check-circle confirmation-icon"></i>
+        <p class="confirmation-text">Vous avez importé votre fichier avec succès!</p>
+        <button class="btn btn-success confirm-button" (click)="confirmAction2()">Ok</button>  </div>
+    </div>
     <div class="discussion-button">
       <button type="button" class="btn btn-primary" [disabled]="!selectedFec" (click)="launchDiscussion()">Lancer votre discussion</button>
     </div>

@@ -34,7 +34,7 @@ export class NewchatComponent {
   showPreviousComponent: boolean = false;
   private socket: any;
   isPopupOpen = false;
-
+  isPopupOpen2 =false;
   private apiUrl = environment.apiUrl;
 
   constructor(
@@ -111,7 +111,12 @@ closemodal(){
     this.fecService.uploadFile(file,this.currentUser?.userInfo._id!).subscribe(
       (response: any) => {
         console.log("Response:", response);
-  
+  if(response.status === 200){
+    this.isPopupOpen2 = true;
+
+this.getFecs();
+console.log("upload fec avec succes");
+  }
         if (response && response.message && response.fecId) {
           if (response.message === "Un fichier avec le même nom existe déjà.") {
             console.log("Fichier déjà existant:", response.message);
@@ -165,6 +170,9 @@ closemodal(){
     this.isPopupOpen = false;
   }
 
+  confirmAction2(){
+    this.isPopupOpen2 = false;
+  }
 
   
   replaceFile(existingFecId: string, file: File) {
