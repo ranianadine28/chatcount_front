@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ChatService, Message } from './chatbot.service';
 import { FecService } from './file-upload/file-upload.service';
-import { ViewChild, ElementRef } from '@angular/core'; // Import for ViewChild
+import { ViewChild, ElementRef } from '@angular/core'; 
 import { AuthService } from '../authetification/auth.service';
 import { environment } from '../environment/environment';
 import { User } from '../authetification/login/model_user';
@@ -10,7 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewchatComponent } from '../chat-div/modal/newchat/newchat.component';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { trigger, transition, style, animate } from '@angular/animations'; // Importation des animations
+import { trigger, transition, style, animate } from '@angular/animations'; 
 
 @Component({
   selector: 'app-chatbot',
@@ -37,9 +37,12 @@ export class ChatComponent implements OnInit {
   currentUser: User | null = null;
   conversationSubscription: Subscription | undefined;
   conversationId!: string;
+  selectedMessageId: string | null = null;
+  showCommentInput: boolean[] = [];
+
   selectBConvContent:string = '';
   feedbackType: 'like' | 'dislike' | 'comment' | null = null;
-  selectedMessageId: string | null = null;
+  showCommentInputForMessageId: string | null = null;
   @ViewChild('audioRecorder', {static: false}) audioRecorder!: ElementRef<HTMLAudioElement>; 
 
   constructor(
@@ -90,18 +93,33 @@ export class ChatComponent implements OnInit {
     this.chatService.conversation.subscribe((messages: Message[]) => {
       this.messages = [...this.messages, ...messages];
     });
+   
   
-    this.conversationSubscription = this.chatService.conversation.subscribe(
-      (messages) => (this.messages = messages)
-    );
-  
+    this.conversationSubscription = this.chatService.conversation.subscribe((messages: Message[]) => {
+      this.messages = [];
+      this.messages = [...messages];
+    });
     
   }
   
   bots: any[] = []; 
   ngOnDestroy() {
-    this.conversationSubscription!.unsubscribe();
+    if (this.conversationSubscription) {
+      this.conversationSubscription.unsubscribe();
+    }
   }
+  
+  toggleCommentInput(index: number) {
+    // Vérifie si l'index est déjà dans showCommentInput
+    if (this.showCommentInput[index] !== undefined) {
+      // Si oui, bascule simplement l'état
+      this.showCommentInput[index] = !this.showCommentInput[index];
+    } else {
+      // Sinon, initialise l'état à true (ouvert) pour ce message
+      this.showCommentInput[index] = true;
+    }
+  }
+  
   addChat() {
     this.showContent = false;
 
@@ -118,6 +136,8 @@ export class ChatComponent implements OnInit {
       }
     }, () => {});
   }
+
+  
   sendFeedback(type: 'like' | 'dislike' | 'comment', messageId: string) {
     this.feedbackType = type;
     this.selectedMessageId = messageId;
@@ -199,6 +219,42 @@ export class ChatComponent implements OnInit {
         });
     }
   }
-
+  likeMessage(message: Message) {
+    if (message.sender === 'bot') {
+      message.likes++;
+      console.log('Like ajouté au message :', message);
+      this.updateLikesDislikes(message);
+    }
+  }
+  
+  dislikeMessage(message: Message) {
+    if (message.sender === 'bot') {
+      message.dislikes++;
+      console.log('Dislike ajouté au message :', message);
+      this.updateLikesDislikes(message);
+    }
+  }
+  addComment(message: Message) {
+    if (message.comment && message.comment.trim() !== '') {
+      this.updateLikesDislikes(message);
+      message.comment = '';
+    }
+  }
+  
+  updateLikesDislikes(message: Message) {
+    console.log('Envoi de la mise à jour des likes/dislikes pour le message :', message);
+    this.chatService.socket.emit('updateLikesDislikes', { 
+      conversationId: this.conversationId, 
+      message,
+      likes: message.likes, 
+      dislikes: message.dislikes,
+      comment: message.comment // Ajoutez le commentaire ici
+    });
+    this.chatService.saveMessageToDatabase(message.sender!, message.text, message.likes, message.dislikes, this.conversationId, message.comment!);
+  }
+  
+  
+  
+  
   
 }

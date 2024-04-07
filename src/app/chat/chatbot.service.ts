@@ -10,12 +10,23 @@ import { AuthService } from '../authetification/auth.service';
 import { map } from 'rxjs/operators'; // Importez les opérateurs map et catchError
 
 export class Message {
-  constructor(public sender: string | undefined, public text: string) {}
+  constructor(
+    public sender: string | undefined,
+    public text: string,
+    public likes: number,
+    public dislikes: number,
+    public comment: string | null = null // Ajoutez cette ligne pour stocker un seul commentaire par message
+  ) {}
 }
+
+
 
 @Injectable()
 export class ChatService {
-  private socket: any;
+  likes: number = 0; 
+  dislikes: number = 0; 
+  comment: string = "";
+  public socket: any;
   conversation = new Subject<Message[]>();
   private fecName: string | undefined;
 
@@ -33,7 +44,7 @@ export class ChatService {
   }
 
   getBotAnswer(msg: string, conversationId: string) {
-    const userMessage = new Message('user', msg);
+    const userMessage = new Message('user', msg,0,0,"");
     this.conversation.next([userMessage]);
     this.socket.emit('message', { text: msg, conversationId }); // Envoyer le message de l'utilisateur au backend
   }
@@ -51,15 +62,24 @@ export class ChatService {
   initSocketListeners(conversationId: string) {
     // Écouter l'événement 'fetchFecName' pour récupérer le nom FEC
     this.socket.emit('fetchFecName', conversationId);
-
+    this.socket.on('updateLikesDislikes', (data: any) => {
+      // Vérifiez si l'ID de la conversation correspond à celle en cours
+      if (data.conversationId === conversationId) {
+          // Mettez à jour les likes et dislikes dans votre composant Angular
+          this.likes = data.likes;
+          this.dislikes = data.dislikes;
+          this.comment = data.comment;
+          
+      }
+  });
+  
     this.socket.on('message', (data: any) => {
-      const botMessage = new Message('bot', data);
+      const botMessage = new Message(data.sender, data.text, data.likes, data.dislikes,data.comment);
       this.conversation.next([botMessage]);
-      // this.saveMessageToDatabase('bot', data, conversationId);
       console.log("id", conversationId);
       console.log(data);
-    });
-
+  });
+  
     // Écouter la réponse pour le nom FEC
     this.socket.on('fecName', (fecName: string) => {
       this.fecName = fecName;
@@ -67,12 +87,15 @@ export class ChatService {
     });
   }
   
-  saveMessageToDatabase(sender: string, text: string, conversationId: string): void {
+  async saveMessageToDatabase(sender: string, text: string, likes: number, dislikes: number, conversationId: string,comment:string) {
     if (conversationId && conversationId.trim() !== '') {
-      this.saveConversation([{ sender, text }], conversationId)
+      this.saveConversation([{ sender, text, likes, dislikes,comment }], conversationId)
         .subscribe(
           (response) => {
             console.log("Message enregistré avec succès :", response);
+            this.likes = likes;
+            this.dislikes = dislikes;
+            this.comment =comment;
           },
           (error) => {
             console.error("Erreur lors de l'enregistrement du message :", error);

@@ -18,6 +18,12 @@
 .to {
   background-color: #c8d9f0; 
 }
+.bord{
+  border-radius: 12px;
+  border-color: #ffffff;
+  background-color: #ffffff55;
+  ;
+}
 
 .input-group {
   position: fixed;
@@ -54,7 +60,13 @@
   z-index: 1000;
   padding: 10px;
 }
-
+.reaction-section{
+  padding-left: 80%;
+  
+}
+.margin{
+  margin: 3px;
+}
 .messages-wrapper {
 height: 450px;
 margin-bottom: 80px;

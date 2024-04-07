@@ -47,12 +47,25 @@
         
           <div class="messages-wrapper">
             <div class="col">
-              <div *ngFor="let message of messages" [@messageAnimation]="true" class="message-container">
-                <div class="message " [ngClass]="{ 'from': message.sender === 'bot', 'to': message.sender === 'user' }">
-                  <img *ngIf="message.sender === 'user'" class="useravatar" [src]="currentUser?.userInfo?.avatar ? imgPrefix + currentUser?.userInfo?.avatar : 'assets/avatar.jpg'" alt="Avatar Utilisateur" height="40" width="40">
-                  <img *ngIf="message.sender === 'bot'" class="botavatar" src="assets/logo.jpg" alt="Avatar Bot">
-                  {{ message.text }}
-                </div>
+                <div *ngFor="let message of messages; let i = index" [@messageAnimation]="true" class="message-container">
+                  <div class="message" [ngClass]="{ 'from': message.sender === 'bot', 'to': message.sender === 'user' }">
+                    <img *ngIf="message.sender === 'user'" class="useravatar" [src]="currentUser?.userInfo?.avatar ? imgPrefix + currentUser?.userInfo?.avatar : 'assets/avatar.jpg'" alt="Avatar Utilisateur" height="40" width="40">
+                    <img *ngIf="message.sender === 'bot'" class="botavatar" src="assets/logo.jpg" alt="Avatar Bot">
+                    {{ message.text }}
+                
+                    <div class="reaction-section" *ngIf="message.sender === 'bot'">
+                      <i class="fa fa-thumbs-up like-icon margin" (click)="likeMessage(message)"></i>
+                      <span class="like-count margin">{{ message.likes }}</span>
+                      <i class="fa fa-thumbs-down dislike-icon margin"  (click)="dislikeMessage(message)"></i>
+                      <span class="dislike-count margin">{{ message.dislikes }}</span>
+                      <i class="fa fa-comment comment-icon margin"  (click)="toggleCommentInput(i)"></i>
+                    </div>
+                
+                    <div class="comment-section " *ngIf="showCommentInput[i]">
+                      <input class="bord" type="text" [(ngModel)]="message.comment" placeholder="Ajouter un commentaire..." (keyup.enter)="addComment(message)">
+                    </div>
+                  </div>
+                
               </div>
             </div>
           </div>
