@@ -1,5 +1,5 @@
 .container {
-  max-width: 800px; /* ajustez la largeur selon vos besoins */
+  max-width: 1000px; /* ajustez la largeur selon vos besoins */
   margin: 0 auto; /* centre le conteneur horizontalement */
   padding: 20px;
   overflow: hidden;
@@ -124,10 +124,7 @@ html, body {
   object-fit: cover;
   margin-right: 10px;
 }
-.container {
-  width: 600px;
-  margin: 20px auto;
-}
+
 
 
 
@@ -214,9 +211,11 @@ html, body {
 }
 
 .card {
-  width: calc(33.333% - 10px);
+  width: 100%;
+ align-items: center;
   background-color: #fff;
   padding: 15px;
+  height: 250px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

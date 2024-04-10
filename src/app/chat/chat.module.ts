@@ -10,6 +10,7 @@ import { ToastrModule, provideToastr } from 'ngx-toastr';
 import { MatDialogModule } from '@angular/material/dialog'; 
 import { ConfirmmodalComponentj } from '../chat-div/modal/confirmmodal/confirmmodal.component';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const routes: Routes = [
   {
@@ -31,8 +32,8 @@ const routes: Routes = [
 
   ],
   declarations: [ChatComponent,FileUploadComponent,ConfirmmodalComponentj],
-  providers: [ChatService, 
-//  provideAnimations(), 
+  providers: [ChatService, MatSnackBarModule,
+ provideAnimations(), 
  provideToastr(),
 ],
   

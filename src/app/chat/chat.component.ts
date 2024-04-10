@@ -224,6 +224,8 @@ export class ChatComponent implements OnInit {
       message.likes++;
       console.log('Like ajouté au message :', message);
       this.updateLikesDislikes(message);
+      location.reload();
+
     }
   }
   
@@ -232,12 +234,16 @@ export class ChatComponent implements OnInit {
       message.dislikes++;
       console.log('Dislike ajouté au message :', message);
       this.updateLikesDislikes(message);
+      location.reload();
+      
+
     }
   }
   addComment(message: Message) {
     if (message.comment && message.comment.trim() !== '') {
       this.updateLikesDislikes(message);
       message.comment = '';
+      location.reload();
     }
   }
   

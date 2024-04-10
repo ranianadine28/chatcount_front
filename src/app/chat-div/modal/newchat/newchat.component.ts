@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, PLATFORM_ID, ViewChild, ChangeDetectorRef  } from '@angular/core';
 import { ChatService } from '../../../chat/chatbot.service';
 import { AlertHandlerService } from '../../../SharedModule/alert_handler.service';
 import { FecService } from '../../../chat/file-upload/file-upload.service';
@@ -45,6 +45,7 @@ export class NewchatComponent {
     private fecService: FecService,
     private authService: AuthService,
     private toastr: ToastrService,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object,
     private dialog: MatDialog ,
     
@@ -85,8 +86,7 @@ export class NewchatComponent {
     this.fecService.getFecs(this.currentUser?.userInfo._id!).subscribe(
       response => {
         this.fecs = response.data;
-        console.log(this.currentUser?.userInfo._id!);
-
+        this.cdr.detectChanges(); // Force la détection de changement
       },
       error => {
         this.alertServ.alertHandler(
@@ -147,7 +147,13 @@ console.log("upload fec avec succes");
           this.replaceFile( error.error.fecId,file);
           this.isPopupOpen = true;
 
-        } else {
+        } else 
+        if (error.status === 300) {
+          this.fecs = this.fecs.filter(fec => fec._id !== error.error.fecId);
+
+          this.isPopupOpen2 = true;
+        }
+        else {
           if (error.error && error.error.message) {
             this.alertServ.alertHandler(
               error.error.message,
@@ -236,7 +242,9 @@ console.log("upload fec avec succes");
                  
                     // Naviguer vers la nouvelle page et effacer l'historique de navigation
                
-                      this.router.navigate(['/pages/chat', response.conversationId]);
+                      this.router.navigate(['/pages/chat', response.conversationId]).then(() => {
+                        location.reload();
+                      });
                       this.socket.emit("launch_success", { fecName: this.selectedFec!.name, conversationId: response.conversationId });
                       console.log("Selected FEC:", this.selectedFec);
 console.log("Selected FEC name:", this.selectedFec!.name);
@@ -259,16 +267,18 @@ closePopup(){
 }
     
 deleteFec(fecId: string): void {
-  this.fecService.deleteFec(fecId).subscribe(
-    () => {
-      this.getFecs();
+  this.fecService.deleteFec(fecId).subscribe({
+    next: () => {
+      // Supprime le FEC de la liste côté client
+      this.fecs = this.fecs.filter(fec => fec._id !== fecId);
       console.log('fec supprimé avec succès');
     },
-    error => {
+    error: error => {
       console.error('Erreur lors de la suppression du fec :', error);
     }
-  );
+  });
 }
+
 
   
 }

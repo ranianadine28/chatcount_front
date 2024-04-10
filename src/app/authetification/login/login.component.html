@@ -38,6 +38,12 @@
       <button type="submit">S'inscrire</button>
       
     </form>
+    <div class="overlay" [class.active]="isPopupOpen">
+      <div class="popup">
+        <i class="fa fa-check-circle confirmation-icon"></i>
+        <p class="confirmation-text">Un fichier avec le même nom existe déjà!. Voulez-vous le remplacer par le fichier suivant ?</p>
+        <button class="btn btn-success confirm-button" (click)="confirmAction()">Confirmer</button>  </div>
+    </div>
   </div>
 
   <div class="form-container sign-in" [ngClass]="{'active': signInMode, 'hidden': !signInMode}">

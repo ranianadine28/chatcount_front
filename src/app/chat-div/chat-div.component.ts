@@ -88,8 +88,9 @@ export class ChatDivComponent implements OnInit {
     );
   }
   loadConversationHistory(conversationId: string): void {
-    this.router.navigate(['/pages/chat', conversationId]);
-   
+    this.router.navigate(['/pages/chat', conversationId]).then(() => {
+      location.reload();
+    });
   }
   
   onDeleteConversation(conversationId: string): void {

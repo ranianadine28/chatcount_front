@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Renderer2,ElementRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Renderer2,ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AlertHandlerService } from '../../SharedModule/alert_handler.service';
 import { register } from 'module';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +30,9 @@ export class LoginComponent implements OnInit {
   signInMode = true;
   public file:any;
 
+
   constructor(
+
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
@@ -141,7 +145,14 @@ export class LoginComponent implements OnInit {
           closeButton: true
         });      }
     );
-    }   
+    }  
+    closemodal(){
+      var modal=document.getElementById("modal1");
+      modal!.style.display = "none";
+    } 
+    confirmAction(){
+      this.isPopupOpen = false;
+    }
     onFileSelected(event: any) {
       if (event.target.files[0].size > 5242880) {
         // Handle file size limit
@@ -173,13 +184,15 @@ export class LoginComponent implements OnInit {
           (response: any) => {
             if (response.statusCode === 201) {
               this._snackBar.open('Inscription réussie ! Vous pouvez maintenant vous connecter.', 'Fermer', {
-                duration: 5000, // Durée d'affichage en ms
+                duration: 5000, 
               });
               localStorage.setItem('token', response.token);
               this.toastr.success('Vous avez créé votre compte avec succès. Vous pouvez maintenant passer à la connexion.', 'Inscription réussie');
+              this.isPopupOpen = true;
 
               this.loading = false;
-              this.router.navigate(['/login']);
+              this.router.navigate(['/auth/login']);
+              location.reload();
             } else if (response.statusCode === 403) {
               console.log('L\'utilisateur existe déjà !');
               this.toastr.error('L\'utilisateur existe déjà !');
@@ -187,13 +200,28 @@ export class LoginComponent implements OnInit {
               this.loading = false;
             }
           },
-          (error: any) => {
-            this.toastr.error('Opération échouée', 'Échec', {
-              positionClass: 'toast-bottom-right',
-              toastClass: 'toast ngx-toastr',
-              closeButton: true
-            });
-           this.loading = false;
+          (error: HttpErrorResponse) => {
+            console.error("File upload error:", error);
+            if (error.status === 300) {
+              this._snackBar.open('Inscription réussie ! Vous pouvez maintenant vous connecter.', 'Fermer', {
+                duration: 5000, 
+              });
+              console.log("Fichier déjà existant:", error.error.message);
+              this.isPopupOpen = true;
+            } else {
+              // Handle other error cases
+              if (error.error && error.error.message) {
+                this.alertServ.alertHandler(error.error.message, "error");
+                this._snackBar.open('Une erreur inconnue s"est produite lors du chargement du fichier.', 'Fermer', {
+                  duration: 5000, 
+                });
+              } else {
+                this.alertServ.alertHandler("Une erreur inconnue s'est produite lors du chargement du fichier.", "error");
+                this._snackBar.open('Une erreur inconnue s"est produite lors du chargement du fichier.', 'Fermer', {
+                  duration: 5000, 
+                });
+              }
+            }
           }
       );
   }
