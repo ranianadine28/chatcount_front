@@ -44,7 +44,8 @@ export class ChatComponent implements OnInit {
   feedbackType: 'like' | 'dislike' | 'comment' | null = null;
   showCommentInputForMessageId: string | null = null;
   @ViewChild('audioRecorder', {static: false}) audioRecorder!: ElementRef<HTMLAudioElement>; 
-
+  showCommentModal: boolean = false;
+  selectedMessage: any;
   constructor(
     public chatService: ChatService,
     private modal: NgbModal,
@@ -259,7 +260,14 @@ export class ChatComponent implements OnInit {
     this.chatService.saveMessageToDatabase(message.sender!, message.text, message.likes, message.dislikes, this.conversationId, message.comment!);
   }
   
-  
+  openCommentDialog(message: any) {
+    this.selectedMessage = message;
+    this.showCommentModal = true;
+  }
+
+  closeCommentModal() {
+    this.showCommentModal = false;
+  }
   
   
   
