@@ -5,7 +5,7 @@
     <div class="col-12">
       <div class="message-list">
         <div class="message-list" *ngIf="conversationId === ':id'">
-          <img src="assets/chatcount.svg" alt="Logo" class="rounded-circle"  height="90" width="90" style="margin-left: 500px; margin-bottom: 20px;">
+          <img src="assets/chatt.png" alt="Logo" class="rounded-circle"  height="150" width="150" style="margin-left: 450px; margin-bottom: 20px;">
 
           <h1 class="title" style="margin-left: 35px;">Comment puis-je vous aider aujourd'hui ?</h1>
         
@@ -26,43 +26,75 @@
         </div>
         
         </div>
-        
-        
         <ng-container *ngIf="conversationId !== ':id'">
           <div class="row">
             <div class="col text-right">
               <div *ngIf="fecName" class="fec-name" style="font-size: 20px;">{{ fecName }}</div>
             </div>
           </div>
-        
+          
           <div class="messages-wrapper">
             <div class="col">
-                <div *ngFor="let message of messages; let i = index" [@messageAnimation]="true" class="message-container">
-                  <div class="message" [ngClass]="{ 'from': message.sender === 'bot', 'to': message.sender === 'user' }">
-                    <img *ngIf="message.sender === 'user'" class="useravatar" [src]="currentUser?.userInfo?.avatar ? imgPrefix + currentUser?.userInfo?.avatar : 'assets/avatar.jpg'" alt="Avatar Utilisateur" height="40" width="40">
-                    <img *ngIf="message.sender === 'bot'" class="botavatar" src="assets/logo.jpg" alt="Avatar Bot">
+              <div *ngFor="let message of messages; let i = index" [@messageAnimation]="true" class="message-container">
+                <div class="message" [ngClass]="{ 'from': message.sender === 'bot', 'to': message.sender === 'user' }">
+                  <img *ngIf="message.sender === 'user'" class="useravatar" [src]="currentUser?.userInfo?.avatar ? imgPrefix + currentUser?.userInfo?.avatar : 'assets/avatar.jpg'" alt="Avatar Utilisateur" height="40" width="40">
+                  <img *ngIf="message.sender === 'bot'" class="botavatar" src="assets/logo.jpg" alt="Avatar Bot">
+                  <ng-container *ngIf="message.text && message.text.includes('|'); else textMessage">
+                    <table class="table">
+                      <tbody>
+                        <tr>
+                          <th>Mois</th>
+                          <th>CA</th>
+                          <th>Pourcentage</th>
+                        </tr>
+                        <ng-container *ngFor="let row of message.text.split(';'); let j = index">
+                          <tr *ngIf="j % 3 === 0">
+                            <ng-container *ngFor="let column of row.split('|'); let k = index">
+                              <td>{{ column }}</td>
+                            </ng-container>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </ng-container>
+                  <ng-template #textMessage>
                     {{ message.text }}
-                
-                    <div class="reaction-section" *ngIf="message.sender === 'bot'">
-                      <i class="fa fa-thumbs-up like-icon margin" (click)="likeMessage(message)"></i>
-                      <span class="like-count margin">{{ message.likes }}</span>
-                      <i class="fa fa-thumbs-down dislike-icon margin"  (click)="dislikeMessage(message)"></i>
-                      <span class="dislike-count margin">{{ message.dislikes }}</span>
-                      <i class="fa fa-comment comment-icon margin"  (click)="toggleCommentInput(i)"></i>
-                    </div>
-                
-                    <div class="comment-section " *ngIf="showCommentInput[i]">
-                      <input class="bord" type="text" [(ngModel)]="message.comment" placeholder="Ajouter un commentaire..." (keyup.enter)="addComment(message)">
+                  </ng-template>
+                  
+                  
+                  <div class="reaction-section" *ngIf="message.sender === 'bot'">
+                    <i class="fa fa-thumbs-up like-icon margin" (click)="likeMessage(message)"></i>
+                    <span class="like-count margin">{{ message.likes }}</span>
+                    <i class="fa fa-thumbs-down dislike-icon margin"  (click)="dislikeMessage(message)"></i>
+                    <span class="dislike-count margin">{{ message.dislikes }}</span>
+                    <i class="fa fa-comment comment-icon margin"  (click)="toggleCommentInput(i)"></i>
+                    <button (click)="toggleComments(i)" class="btn btn-primary2 margin2">{{ showComments[i] ? 'Masquer les commentaires' : 'Voir les commentaires' }}</button>
+                  </div>
+        
+                  <div class="comment-section" [hidden]="!showCommentInput[i]">
+                    <input class="bord" type="text" [(ngModel)]="newComment[i]" placeholder="Ajouter un commentaire..." (keyup.enter)="addComment(message, newComment[i]); newComment[i] = ''">
+                  </div>
+        
+                  <div class="comment-section" [hidden]="!showComments[i]">
+                    <div *ngFor="let comment of message.comments" class="comment d-flex align-items-center">
+                      <div class="comment-avatar mr-2">
+                        <img  class="useravatar" [src]="currentUser?.userInfo?.avatar ? imgPrefix + currentUser?.userInfo?.avatar : 'assets/avatar.jpg'" alt="Avatar Utilisateur" height="30" width="30">
+                      </div>
+                      <div class="comment-content">
+                        <p>{{ comment }}</p>
+                      </div>
                     </div>
                   </div>
-                
+                  
+                </div>
               </div>
             </div>
           </div>
         </ng-container>
+
         
       </div>
-      
+   
       
       <div class="row message-input-row">
         <div class="col-md-6">

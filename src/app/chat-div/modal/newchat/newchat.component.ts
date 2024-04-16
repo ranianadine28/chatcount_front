@@ -86,7 +86,7 @@ export class NewchatComponent {
     this.fecService.getFecs(this.currentUser?.userInfo._id!).subscribe(
       response => {
         this.fecs = response.data;
-        this.cdr.detectChanges(); // Force la détection de changement
+        this.cdr.detectChanges(); 
       },
       error => {
         this.alertServ.alertHandler(
@@ -110,9 +110,11 @@ closemodal(){
   handleFileUpload(file: File) {
     this.fecService.uploadFile(file,this.currentUser?.userInfo._id!).subscribe(
       (response: any) => {
+        
         console.log("Response:", response);
   if(response.status === 200){
-    this.isPopupOpen2 = true;
+    //this.isPopupOpen2 = true;
+    this.fecs = this.fecs.filter(fec => fec._id !== response._id);
 
 this.getFecs();
 console.log("upload fec avec succes");
@@ -149,9 +151,11 @@ console.log("upload fec avec succes");
 
         } else 
         if (error.status === 300) {
+          this.isPopupOpen2 = true;
+          this.getFecs();
           this.fecs = this.fecs.filter(fec => fec._id !== error.error.fecId);
 
-          this.isPopupOpen2 = true;
+
         }
         else {
           if (error.error && error.error.message) {
@@ -269,7 +273,6 @@ closePopup(){
 deleteFec(fecId: string): void {
   this.fecService.deleteFec(fecId).subscribe({
     next: () => {
-      // Supprime le FEC de la liste côté client
       this.fecs = this.fecs.filter(fec => fec._id !== fecId);
       console.log('fec supprimé avec succès');
     },

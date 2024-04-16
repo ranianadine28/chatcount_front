@@ -30,6 +30,7 @@ export class ChatComponent implements OnInit {
   imgPrefix = environment.apiUrl + '/avatars/';
   messages: Message[] = [];
   value = '';
+  showComments: boolean[] = []
   public noConversationId: boolean = false;
   recording = false; 
   public conversationExists: boolean = false;
@@ -39,6 +40,7 @@ export class ChatComponent implements OnInit {
   conversationId!: string;
   selectedMessageId: string | null = null;
   showCommentInput: boolean[] = [];
+  newComment: string[] = [];
 
   selectBConvContent:string = '';
   feedbackType: 'like' | 'dislike' | 'comment' | null = null;
@@ -100,7 +102,11 @@ export class ChatComponent implements OnInit {
       this.messages = [];
       this.messages = [...messages];
     });
-    
+    this.messages.forEach(() => {
+      this.newComment.push('');
+    });
+   // this.messages.forEach(() => this.showComments.push(false));
+
   }
   
   bots: any[] = []; 
@@ -111,14 +117,14 @@ export class ChatComponent implements OnInit {
   }
   
   toggleCommentInput(index: number) {
-    // Vérifie si l'index est déjà dans showCommentInput
     if (this.showCommentInput[index] !== undefined) {
-      // Si oui, bascule simplement l'état
       this.showCommentInput[index] = !this.showCommentInput[index];
     } else {
-      // Sinon, initialise l'état à true (ouvert) pour ce message
       this.showCommentInput[index] = true;
     }
+
+  
+  
   }
   
   addChat() {
@@ -172,19 +178,26 @@ export class ChatComponent implements OnInit {
     }
   }
   loadConversationMessages(conversationId: string): void {
-    this.messages = []; 
+    this.messages = []; // Effacer les messages existants avant de charger les nouveaux
     this.chatService.getConversationMessages(conversationId).subscribe(
       messages => {
-        this.messages = messages; 
+        this.messages = messages.map((message: Message) => {
+          if (Array.isArray(message.text)) {
+            const formattedText = message.text.map(item => `${item.month} | ${item.revenue} | ${item.percentage};`).join('\n');
+            return { ...message, text: formattedText };
+          } else if (typeof message.text === 'object') {
+            const formattedText = JSON.stringify(message.text);
+            return { ...message, text: formattedText };
+          } else {
+            return message;
+          }
+        });
       },
       error => {
-      
       }
     );
-  
-
-
   }
+  
   
   startRecording() {
     if (!this.recording) {
@@ -225,9 +238,9 @@ export class ChatComponent implements OnInit {
       message.likes++;
       console.log('Like ajouté au message :', message);
       this.updateLikesDislikes(message);
-      location.reload();
 
     }
+
   }
   
   dislikeMessage(message: Message) {
@@ -235,16 +248,18 @@ export class ChatComponent implements OnInit {
       message.dislikes++;
       console.log('Dislike ajouté au message :', message);
       this.updateLikesDislikes(message);
-      location.reload();
       
+
 
     }
   }
-  addComment(message: Message) {
-    if (message.comment && message.comment.trim() !== '') {
+  addComment(message: Message, newComment: string) {
+    if (newComment && newComment.trim() !== '') {
+      message.comments!.push(newComment); // Ajouter le nouveau commentaire au tableau des commentaires
+  
       this.updateLikesDislikes(message);
-      message.comment = '';
-      location.reload();
+  
+      newComment = '';
     }
   }
   
@@ -255,10 +270,19 @@ export class ChatComponent implements OnInit {
       message,
       likes: message.likes, 
       dislikes: message.dislikes,
-      comment: message.comment // Ajoutez le commentaire ici
+      comments: message.comments // Utiliser le tableau des commentaires ici
     });
-    this.chatService.saveMessageToDatabase(message.sender!, message.text, message.likes, message.dislikes, this.conversationId, message.comment!);
-  }
+    this.chatService.saveMessageToDatabase(
+      message.sender!,
+      Array.isArray(message.text) ? 
+        message.text.map(item => `${item.month}: ${item.revenue}, ${item.percentage}`).join('\n') : 
+        message.text,
+      message.likes,
+      message.dislikes,
+      this.conversationId,
+      message.comments!
+    );
+      }
   
   openCommentDialog(message: any) {
     this.selectedMessage = message;
@@ -267,6 +291,14 @@ export class ChatComponent implements OnInit {
 
   closeCommentModal() {
     this.showCommentModal = false;
+  }
+  toggleComments(index: number) {
+    if (this.showComments[index] !== undefined) {
+      this.showComments[index] = !this.showComments[index];
+    } else {
+      this.showComments[index] = true; // ou false selon votre cas d'utilisation
+    }
+    console.log('Affichage des commentaires pour le message ', index, ':', this.showComments[index]);
   }
   
   
