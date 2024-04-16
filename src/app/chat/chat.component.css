@@ -69,7 +69,7 @@
 }
 .messages-wrapper {
   height: 700px;
-  margin-bottom: 20px;
+  margin-bottom: 80px;
   scrollbar-color: hsla(0, 0%, 95%, 0.707) hsla(240, 4%, 86%, 0); 
   scrollbar-width: thin;
   max-height: calc(100% - 100px); 
