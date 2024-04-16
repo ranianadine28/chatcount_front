@@ -97,6 +97,7 @@ export class ChatDivComponent implements OnInit {
     this.conversationService.deleteConversation(conversationId).subscribe(
       () => {
         this.getConversations();
+        location.reload();
         console.log('Conversation supprimée avec succès');
       },
       error => {

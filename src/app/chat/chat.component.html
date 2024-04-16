@@ -26,6 +26,10 @@
         </div>
         
         </div>
+
+        <div class="message-list">
+          <div style="height:80vh ; width: auto;  overflow-y: scroll; scrollbar-color: hsla(0, 0%, 95%, 0.707) hsla(240, 4%, 86%, 0);  flex-direction: column-reverse;  ">
+
         <ng-container *ngIf="conversationId !== ':id'">
           <div class="row">
             <div class="col text-right">
@@ -91,11 +95,12 @@
             </div>
           </div>
         </ng-container>
+        </div>
 
         
       </div>
    
-      
+    </div>
       <div class="row message-input-row">
         <div class="col-md-6">
           <div class="input-group">
