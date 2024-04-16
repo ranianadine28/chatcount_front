@@ -68,7 +68,7 @@
   margin: 3px;
 }
 .messages-wrapper {
-  height: 800px;
+  height: 700px;
   margin-bottom: 20px;
   scrollbar-color: hsla(0, 0%, 95%, 0.707) hsla(240, 4%, 86%, 0); 
   scrollbar-width: thin;
