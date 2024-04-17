@@ -11,22 +11,22 @@ interface SideNavToggle {
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css'], // Utilisez styleUrls au lieu de styleUrl
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('350ms',
-        style({opacity: 1})
-        )
-      ]),
-      transition(':leave', [
-        style({opacity: 1}),
-        animate('350ms',
-        style({opacity: 0})
-        )
-      ])
-    ])
-  ]
+  // animations: [
+  //   trigger('fadeInOut', [
+  //     transition(':enter', [
+  //       style({opacity: 0}),
+  //       animate('350ms',
+  //       style({opacity: 1})
+  //       )
+  //     ]),
+  //     transition(':leave', [
+  //       style({opacity: 1}),
+  //       animate('350ms',
+  //       style({opacity: 0})
+  //       )
+  //     ])
+  //   ])
+  // ]
 })
 
 export class SidenavComponent implements OnInit {
