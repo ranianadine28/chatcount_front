@@ -3,10 +3,10 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-body',
-
   templateUrl: './body.component.html',
-  styleUrl: './body.component.css'
+  styleUrls: ['./body.component.css'] // Utilisez styleUrls au lieu de styleUrl
 })
+
 export class BodyComponent {
 
   @Input() collapsed = false;

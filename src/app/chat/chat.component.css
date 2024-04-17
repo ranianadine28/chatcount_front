@@ -3,12 +3,33 @@
   margin: 0 auto; /* centre le conteneur horizontalement */
   padding: 20px;
   overflow: hidden;
+  min-width: 150vh;
+  min-height: 100vh;
+  position: fixed;
+  margin-left: 18%;
+
 }
 
 .message {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
+}
+.alternate-row {
+  background-color: #427d9f;
+}
+.custom-table {
+  color: #fbefef; /* Couleur du texte */
+  background-color: #ffffff; /* Couleur d'arrière-plan */
+  /* Ajoutez d'autres styles selon vos besoins */
+}
+
+.custom-table th {
+  /* Styles pour les en-têtes de tableau */
+}
+
+.custom-table td {
+  /* Styles pour les cellules de tableau */
 }
 
 .from {
@@ -68,7 +89,6 @@
   margin: 3px;
 }
 .messages-wrapper {
- 
   max-height: calc(100% - 100px); 
   overflow-y: auto;
   display: flex;

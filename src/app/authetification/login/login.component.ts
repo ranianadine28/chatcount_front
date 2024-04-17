@@ -136,14 +136,29 @@ export class LoginComponent implements OnInit {
         }
         this.loading = false;
       },
-      (error: any) => {
-        this.loading = false;
-        // Affichez une notification d'erreur si la connexion échoue
-        this.toastr.error('Opération échouée', 'Échec', {
-          positionClass: 'toast-bottom-right',
-          toastClass: 'toast ngx-toastr',
-          closeButton: true
-        });      }
+      (error: HttpErrorResponse) => {
+        console.error("File upload error:", error);
+        if (error.status === 300) {
+          this._snackBar.open('Inscription réussie ! Vous pouvez maintenant vous connecter.', 'Fermer', {
+            duration: 5000, 
+          });
+          console.log("Fichier déjà existant:", error.error.message);
+          this.isPopupOpen = true;
+        } else {
+          this.loading = false;
+          if (error.error && error.error.message) {
+            this.alertServ.alertHandler(error.error.message, "error");
+            this._snackBar.open('Une erreur inconnue s"est produite.', 'Fermer', {
+              duration: 5000, 
+            });
+          } else    if (error.status === 404){
+            this.alertServ.alertHandler("Une erreur inconnue s'est produite.", "error");
+            this._snackBar.open('Email ou mot de passe incorrect.', 'Fermer', {
+              duration: 5000, 
+            });
+          }
+        }
+      }
     );
     }  
     closemodal(){
@@ -212,12 +227,12 @@ export class LoginComponent implements OnInit {
               // Handle other error cases
               if (error.error && error.error.message) {
                 this.alertServ.alertHandler(error.error.message, "error");
-                this._snackBar.open('Une erreur inconnue s"est produite lors du chargement du fichier.', 'Fermer', {
+                this._snackBar.open('Une erreur inconnue s"est produite.', 'Fermer', {
                   duration: 5000, 
                 });
               } else {
-                this.alertServ.alertHandler("Une erreur inconnue s'est produite lors du chargement du fichier.", "error");
-                this._snackBar.open('Une erreur inconnue s"est produite lors du chargement du fichier.', 'Fermer', {
+                this.alertServ.alertHandler("Une erreur inconnue s'est produite.", "error");
+                this._snackBar.open('Une erreur inconnue s"est produite .', 'Fermer', {
                   duration: 5000, 
                 });
               }

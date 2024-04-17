@@ -28,7 +28,7 @@
         </div>
 
         <div class="message-list">
-          <div style="height:80vh ; width: auto;  overflow-y: scroll; scrollbar-color: hsla(0, 0%, 95%, 0.707) hsla(240, 4%, 86%, 0);  flex-direction: column-reverse;  ">
+          <div style="height:80vh ; width: auto; overflow-y: scroll; scrollbar-color: hsla(0, 0%, 95%, 0.707) hsla(240, 4%, 86%, 0);  flex-direction: column-reverse;  ">
 
         <ng-container *ngIf="conversationId !== ':id'">
           <div class="row">
@@ -44,8 +44,8 @@
                   <img *ngIf="message.sender === 'user'" class="useravatar" [src]="currentUser?.userInfo?.avatar ? imgPrefix + currentUser?.userInfo?.avatar : 'assets/avatar.jpg'" alt="Avatar Utilisateur" height="40" width="40">
                   <img *ngIf="message.sender === 'bot'" class="botavatar" src="assets/logo.jpg" alt="Avatar Bot">
                   <ng-container *ngIf="message.text && message.text.includes('|'); else textMessage">
-                    <table class="table">
-                      <tbody>
+                    <table class="table custom-table">
+                      <tbody class="alternate-row">
                         <tr>
                           <th>Mois</th>
                           <th>CA</th>

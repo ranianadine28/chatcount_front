@@ -68,6 +68,26 @@ export class FecService {
         })
       );
   }
-  
+  createFolder(name: string, userId: string | undefined): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/dossier/create`, { name, userId });
+  }
+
+  // Récupérer tous les dossiers d'un utilisateur
+  getFolders(userId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/dossier/${userId}`);
+  }
+
+  getFolderById(folderId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/dossier/folder/${folderId}`);
+  }
+
+  updateFolder(folderId: string, name: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/dossier/${folderId}`, { name });
+  }
+
+  // Supprimer un dossier
+  deleteFolder(folderId: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/dossier/${folderId}`);
+  }
   
 }

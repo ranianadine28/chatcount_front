@@ -10,13 +10,14 @@
         
     </div>
 
+
     <div class="second-column" *ngIf="showChatDiv()">
        <app-chat-div></app-chat-div>
         </div> 
     
-   
-    
-
+        <div class="second-column" *ngIf="showKnowledgeDiv()">
+            <app-document-div></app-document-div>
+             </div> 
 
     <div class="third-column">
         <ul class="sidenav-nav">
@@ -30,4 +31,5 @@
             </li>
         </ul>
     </div>    
+
 </div>

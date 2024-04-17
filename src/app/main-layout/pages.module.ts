@@ -10,6 +10,8 @@ import { ChatService } from '../chat/chatbot.service';
 import { ChatManagementModule } from '../chat/chat.module';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { NgbDropdown, NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DocumentDivComponent } from '../knowledge/document-div/document-div.component';
+import { AddFolderModalComponent } from '../knowledge/add-folder-modal/add-folder-modal.component';
 
 
 
@@ -81,8 +83,9 @@ const mainroutes: Routes = [
         BodyComponent,
         ChatDivComponent,
         NavbarComponent,
-        ChatDivComponent
-        
+        DocumentDivComponent,
+        AddFolderModalComponent
+       
     ],
     imports: [
       
@@ -90,6 +93,7 @@ const mainroutes: Routes = [
       RouterModule.forChild(mainroutes),
       NgbModule,
       NgbDropdownModule,
+      
 
     ],
     providers: [ChatService],

@@ -7,11 +7,10 @@ import { Router } from '@angular/router';
 interface SideNavToggle {
   screenWidth: number;
   collapsed: boolean;
-}
-@Component({
+}@Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.css',
+  styleUrls: ['./sidenav.component.css'], // Utilisez styleUrls au lieu de styleUrl
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
@@ -25,23 +24,11 @@ interface SideNavToggle {
         animate('350ms',
         style({opacity: 0})
         )
-      ]),
-      // trigger('rotate', [
-      //   transition(':enter',[
-      //    animate('1000ms', 
-      //    keyframes([
-      //     style({transform: 'rotate(0deg)', offset: '0'}),
-      //     style({transform: 'rotate(2turn)', offset: '1'}),
-
-
-      //    ]))
-      //   ])
-      // ])
+      ])
     ])
-    
-   
   ]
 })
+
 export class SidenavComponent implements OnInit {
 
   constructor(private router: Router) { }

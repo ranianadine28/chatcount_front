@@ -71,6 +71,7 @@ export class ChatDivComponent implements OnInit {
       this.conversationService.getConversations(userId!).subscribe(
         (response: any) => {
           if (response && response.conversations) {
+            console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiigggggggggggggggiii");
             const allConversations = response.conversations;
             const lastTenConversations = allConversations.slice(-20).reverse();
             this.conversations = lastTenConversations;
