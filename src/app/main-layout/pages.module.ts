@@ -35,6 +35,15 @@ const mainroutes: Routes = [
             },
           },
           {
+            path: 'knowledge/:id',
+            loadChildren: () => import('../knowledge/knowledge.module').then(m => m.KnowledgeManagementModule),
+            data: {
+              role: {
+                page: 'knowledge',
+              }
+            },
+          },
+          {
             path: 'dashboard',
             loadChildren:()=> import('../dashboard/dashboard.module').then(m=> m.DashboardManagementModule),
             data: {
@@ -53,15 +62,15 @@ const mainroutes: Routes = [
               }
             },
           },
-        {
-          path: 'knowledge',
-          loadChildren: () => import('../knowledge/knowledge.module').then(m => m.KnowledgeManagementModule),
-          data: {
-            role: {
-              page: 'knowledge',
-            }
-          },
-        },
+        // {
+        //   path: 'knowledge',
+        //   loadChildren: () => import('../knowledge/knowledge.module').then(m => m.KnowledgeManagementModule),
+        //   data: {
+        //     role: {
+        //       page: 'knowledge',
+        //     }
+        //   },
+        // },
         {
             path: 'settings',
             loadChildren: () => import('../settings/settings.module').then(m => m.SettingsManagementModule),

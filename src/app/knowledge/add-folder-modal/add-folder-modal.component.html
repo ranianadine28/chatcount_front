@@ -25,6 +25,12 @@
           <p class="confirmation-text">Vous avez créé votre dossier avec succès!</p>
           <button class="btn btn-success confirm-button" (click)="confirmAction2()">Ok</button>  </div>
       </div>
+      <div class="overlay" [class.active]="isPopupOpen">
+        <div class="popup">
+          <i class="fa fa-check-circle confirmation-icon"></i>
+          <p class="confirmation-text">le nom de dossier existe déja!!</p>
+          <button class="btn btn-success confirm-button" (click)="confirmAction2()">Réssayer</button>  </div>
+      </div>
     </div>
     </div>
   </div>

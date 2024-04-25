@@ -10,6 +10,7 @@ import { AlertHandlerService } from '../../SharedModule/alert_handler.service';
 import { FecService } from '../../chat/file-upload/file-upload.service';
 import { ToastrService } from 'ngx-toastr';
 import io from 'socket.io-client';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-folder-modal',
@@ -85,6 +86,9 @@ closemodal(){
 
   confirmAction2(){
     this.isPopupOpen2 = false;
+    location.reload();
+
+
   }
 
   
@@ -100,11 +104,22 @@ closemodal(){
         console.log('Dossier créé avec succès :', response);
     this.isPopupOpen2= true;
       },
-      (error) => {
-        console.error('Erreur lors de la création du dossier :', error);
-      }
-    );
-  }
+      
+      (error: HttpErrorResponse) => {
+        console.error("File upload error:", error);
+        if (error.status === 409) {
+          this.isPopupOpen = true;
+          console.error('le nom de dossier existe déja!', error);
+
+        } else {
+          console.error('Erreur lors de la création du dossier :', error);
+          this.alertServ.alertHandler("Une erreur inconnue s'est produite.", "error");
+
+       }
+          }
+       ) }
+    
+
 
  
 

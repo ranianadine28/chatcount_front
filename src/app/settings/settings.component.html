@@ -1,1 +1,64 @@
-<p>settings works!</p>
+<div class="document-page">
+  <img src="assets/mapping.jpg" alt="Logo" class="rounded-circle" height="150" width="150" style="margin-left: 35%; margin-bottom: 20px;">
+  <h1 class="title" style="margin-left: 30%;">Mapping Section</h1>
+  <div class="card-container" >
+    <div class="labels-row">
+      <h2 (click)="toggleLabels1()">Racine 1</h2>
+      <h2 (click)="toggleLabels2()">Racine 2</h2>
+      <h2 (click)="toggleLabels3()">Racine 3</h2>
+      <h2 (click)="toggleLabels4()">Racine 4</h2>
+      <h2 (click)="toggleLabels5()">Racine 5</h2>
+    </div>
+   <ul class="labels-list" *ngIf="showLabels1">
+  <li *ngFor="let label of labels">{{ label.rootId }} - {{ label.label }}</li>
+</ul>
+
+<ul class="labels-list" *ngIf="showLabels2">
+  <li *ngFor="let label of (showAllLabels2 ? labels2 : labels2 | slice:0:thresholdToShow)">{{ label.rootId }} - {{ label.label }}</li>
+  <li *ngIf="labels2.length > thresholdToShow">
+    <button class="voir" (click)="toggleShowAllLabels2()">
+      {{ showAllLabels2 ? 'Réduire' : 'Voir plus' }}
+    </button>
+  </li>
+</ul>
+
+
+<ul class="labels-list" *ngIf="showLabels3">
+  <li *ngFor="let label of (showAllLabels3 ? labels3 : labels3 | slice:0:thresholdToShow)">{{ label.rootId }} - {{ label.label }}</li>
+  <li *ngIf="labels3.length > thresholdToShow">
+    <button class="voir" (click)="toggleShowAllLabels3()">
+      {{ showAllLabels3 ? 'Réduire' : 'Voir plus' }}
+    </button>
+  </li>
+</ul>
+
+<ul class="labels-list" *ngIf="showLabels4">
+  <li *ngFor="let label of (showAllLabels4 ? labels4 : labels4 | slice:0:thresholdToShow)">{{ label.rootId }} - {{ label.label }}</li>
+  <li *ngIf="labels4.length > thresholdToShow">
+    <button class="voir"  (click)="toggleShowAllLabels4()">
+      {{ showAllLabels4 ? 'Réduire' : 'Voir plus' }}
+    </button>
+  </li>
+</ul>
+
+<ul class="labels-list" *ngIf="showLabels5">
+  <li *ngFor="let label of (showAllLabels5 ? labels5 : labels5 | slice:0:thresholdToShow)">{{ label.rootId }} - {{ label.label }}</li>
+  <li *ngIf="labels5.length > thresholdToShow">
+    <button class="voir"  (click)="toggleShowAllLabels5()">
+      {{ showAllLabels5 ? 'Réduire' : 'Voir plus' }}
+    </button>
+  </li>
+</ul>
+
+<h2>Ajouter un nouveau libellé</h2>
+<div>
+  <label for="newLabelRootId">Identifiant racine :</label>
+  <input type="text" id="newLabelRootId" [(ngModel)]="newLabelRootId">
+</div>
+<div>
+  <label for="newLabelName">Nom du libellé :</label>
+  <input type="text" id="newLabelName" [(ngModel)]="newLabelName">
+</div>
+<button (click)="addNewLabel()" class="btn btn-outline-primary">Ajouter</button>
+</div>
+</div>

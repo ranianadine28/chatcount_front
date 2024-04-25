@@ -11,7 +11,7 @@ export const navbarData = [
 },
 
 {
-    routeLink: 'knowledge',
+    routeLink: 'knowledge/:id',
     icon: 'fal fa-file',
     label: 'Documents'
 },

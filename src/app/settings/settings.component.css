@@ -1,0 +1,57 @@
+.document-page {
+    max-width: 1000px; 
+    margin: 0 auto; 
+    padding: 20px;
+    overflow: hidden;
+    min-width: 150vh;
+    min-height: 100vh;
+    margin-left: 18%;
+    }
+    .btn-outline-primary {
+        background: #030640!;
+        border-radius: 15px;
+        background-color: #030640;
+        color: #f6f2e3;
+        border: 2px solid #030640;
+        margin: 2px;
+    }
+    h2 {
+        margin-bottom: 10px;
+      }
+      
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      li {
+        margin-bottom: 5px;
+      }
+      
+      input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    
+      .labels-list li {
+        margin-right: 20px; /* Espace entre chaque libellé */
+      }
+      .labels-row {
+        display: flex;
+      }
+      
+      .labels-row h2 {
+        margin-right: 20px; /* Pour ajouter un espace entre chaque titre */
+      }
+      .voir{
+        background-color: #bcc9fdb0;
+        font-style: italic;
+        font-size: 18px;
+        border-radius: 10px;
+        border: navy;
+        color: #2541b2; /* Couleur du texte du bouton */
+      }
+      

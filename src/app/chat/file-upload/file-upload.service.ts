@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environment/environment';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 interface UploadResponse {
   status: number; // Add status property
   message?: string; // Optional message property
@@ -89,5 +89,46 @@ export class FecService {
   deleteFolder(folderId: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/dossier/${folderId}`);
   }
+  uploadFiled(file: File, userId: string | null, folderId: string): Observable<UploadResponse> {
+    const formData = new FormData();
+    formData.append('csvFile', file);
+
+    // Ne pas définir explicitement le type de contenu, laisser le navigateur gérer cela pour les requêtes FormData
+
+    return this.http.post<UploadResponse>(`${this.apiUrl}/dossier/upload/${userId}/${folderId}`, formData)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          // Gérer l'erreur HTTP ici
+          return throwError(error); // Renvoie l'erreur au composant pour une gestion ultérieure
+        })
+      );
+  }
+  getFecsd(userId: string | null,folderId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/dossier/${userId}/${folderId}/fec`);
+  }
+  getFecName(conversationId: string): Observable<any>{
+    return this.http.get<{ name: string }>(`${this.apiUrl}/dossier/getFecName/${conversationId}`).pipe(
+      catchError(error => {
+        console.error("Erreur lors de la récupération du nom du FEC :", error);
+        return throwError("Erreur lors de la récupération du nom du FEC");
+      })
+    );
+  }
   
+  deleteFecd(fecId: string): Observable<UploadResponse> {
+    return this.http.delete<UploadResponse>(`${this.apiUrl}/dossier/deleteFec/${fecId}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error); 
+        })
+      );
+  }
+  lancerTraitement(fecId: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/dossier/traiter/${fecId}`, {}).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Une erreur est survenue lors du traitement du FEC :', error);
+        return throwError('Une erreur est survenue lors du traitement du FEC');
+      })
+    );
+  }
 }
