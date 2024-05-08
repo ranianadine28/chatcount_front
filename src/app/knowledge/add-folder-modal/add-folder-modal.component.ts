@@ -103,6 +103,7 @@ closemodal(){
       (response) => {
         console.log('Dossier créé avec succès :', response);
     this.isPopupOpen2= true;
+    location.reload();
       },
       
       (error: HttpErrorResponse) => {

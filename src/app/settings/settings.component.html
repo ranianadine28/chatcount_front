@@ -9,12 +9,53 @@
       <h2 (click)="toggleLabels4()">Racine 4</h2>
       <h2 (click)="toggleLabels5()">Racine 5</h2>
     </div>
-   <ul class="labels-list" *ngIf="showLabels1">
-  <li *ngFor="let label of labels">{{ label.rootId }} - {{ label.label }}</li>
-</ul>
+    <form (ngSubmit)="searchLabels()">
+      <input class="recherche" type="text" [(ngModel)]="searchRootId" name="searchRootId" placeholder="Racine">
+      <input class="recherche" type="text" [(ngModel)]="searchLabel" name="searchLabel" placeholder="Libellé">
+      <button type="submit">Rechercher</button>
+    </form>
+    
+    <div class=" h-[73vh] flex-grow overflow-y-scroll">
 
-<ul class="labels-list" *ngIf="showLabels2">
-  <li *ngFor="let label of (showAllLabels2 ? labels2 : labels2 | slice:0:thresholdToShow)">{{ label.rootId }} - {{ label.label }}</li>
+      <div class="mb-4" *ngIf="showLabels1">
+
+  
+          
+
+        <div class="flex flex-col items-center justify-center space-y-4 ">
+
+            <ul class="labels-list" >
+<li *ngFor="let label of labels">
+  <div>
+    <span>{{ label.rootId }} - </span>
+    
+    <input style="width: 800px;" type="text" [(ngModel)]="label.label" (blur)="updateLabel(label._id, label.label)">
+    <button  class="delete-button" (click)="onDeleteLabel1(label._id)">
+      <i class="fa fa-trash-alt margin-right" style="cursor: pointer;"></i>
+    </button>
+  </div>
+</li></ul>
+            </div>
+          </div>
+          <div class=" h-[73vh] flex-grow overflow-y-scroll">
+
+            <div class="mb-4"*ngIf="showLabels2">
+      
+        
+                
+      
+              <div class="flex flex-col items-center justify-center space-y-4 ">
+      
+
+<ul class="labels-list" >
+  <li *ngFor="let label of (showAllLabels2 ? labels2 : labels2 | slice:0:thresholdToShow)"> <div>
+    <span>{{ label.rootId }} - </span>
+    
+    <input style="width: 800px;" type="text" [(ngModel)]="label.label" (blur)="updateLabel2(label._id, label.label)">
+    <button  class="delete-button" (click)="onDeleteLabel2(label._id)">
+      <i class="fa fa-trash-alt margin-right" style="cursor: pointer;" aria-hidden="true"></i>
+    </button>
+  </div></li>
   <li *ngIf="labels2.length > thresholdToShow">
     <button class="voir" (click)="toggleShowAllLabels2()">
       {{ showAllLabels2 ? 'Réduire' : 'Voir plus' }}
@@ -22,34 +63,87 @@
   </li>
 </ul>
 
+</div>
+</div>
+<div class=" h-[73vh] flex-grow overflow-y-scroll">
 
-<ul class="labels-list" *ngIf="showLabels3">
-  <li *ngFor="let label of (showAllLabels3 ? labels3 : labels3 | slice:0:thresholdToShow)">{{ label.rootId }} - {{ label.label }}</li>
+  <div class="mb-4"  *ngIf="showLabels3">
+
+
+      
+
+    <div class="flex flex-col items-center justify-center space-y-4 ">
+
+<ul class="labels-list">
+  <li *ngFor="let label of (showAllLabels3 ? labels3 : labels3 | slice:0:thresholdToShow)"> <div>
+    <span>{{ label.rootId }} - </span>
+    
+    <input style="width: 800px;" type="text" [(ngModel)]="label.label" (blur)="updateLabel3(label._id, label.label)">
+    <button  class="delete-button" (click)="onDeleteLabel3(label._id)">
+      <i class="fa fa-trash-alt margin-right" style="cursor: pointer;" aria-hidden="true"></i>
+    </button>
+  </div></li>
   <li *ngIf="labels3.length > thresholdToShow">
     <button class="voir" (click)="toggleShowAllLabels3()">
       {{ showAllLabels3 ? 'Réduire' : 'Voir plus' }}
     </button>
   </li>
 </ul>
+</div>
+</div>
+<div class=" h-[73vh] flex-grow overflow-y-scroll">
 
-<ul class="labels-list" *ngIf="showLabels4">
-  <li *ngFor="let label of (showAllLabels4 ? labels4 : labels4 | slice:0:thresholdToShow)">{{ label.rootId }} - {{ label.label }}</li>
+  <div class="mb-4"  *ngIf="showLabels4">
+
+
+      
+
+    <div class="flex flex-col items-center justify-center space-y-4 ">
+
+<ul class="labels-list">
+  <li *ngFor="let label of (showAllLabels4 ? labels4 : labels4 | slice:0:thresholdToShow)"> <div>
+    <span>{{ label.rootId }} - </span>
+    
+    <input style="width: 800px;" type="text" [(ngModel)]="label.label" (blur)="updateLabel4(label._id, label.label)">
+    <button  class="delete-button" (click)="onDeleteLabel4(label._id)">
+      <i class="fa fa-trash-alt margin-right" style="cursor: pointer;" aria-hidden="true"></i>
+    </button>
+  </div></li>
+  
   <li *ngIf="labels4.length > thresholdToShow">
     <button class="voir"  (click)="toggleShowAllLabels4()">
       {{ showAllLabels4 ? 'Réduire' : 'Voir plus' }}
     </button>
   </li>
 </ul>
+</div>
+</div>
+<div class=" h-[73vh] flex-grow overflow-y-scroll">
 
-<ul class="labels-list" *ngIf="showLabels5">
-  <li *ngFor="let label of (showAllLabels5 ? labels5 : labels5 | slice:0:thresholdToShow)">{{ label.rootId }} - {{ label.label }}</li>
+  <div class="mb-4" *ngIf="showLabels5">
+
+
+      
+
+    <div class="flex flex-col items-center justify-center space-y-4 ">
+
+<ul class="labels-list">
+  <li *ngFor="let label of (showAllLabels5 ? labels5 : labels5 | slice:0:thresholdToShow)"> <div>
+    <span>{{ label.rootId }} - </span>
+    
+    <input style="width: 800px;" type="text" [(ngModel)]="label.label" (blur)="updateLabel5(label._id, label.label)">
+    <button  class="delete-button" (click)="onDeleteLabel5(label._id)">
+      <i class="fa fa-trash-alt margin-right" style="cursor: pointer;"aria-hidden="true"></i>
+    </button>
+  </div></li>
   <li *ngIf="labels5.length > thresholdToShow">
     <button class="voir"  (click)="toggleShowAllLabels5()">
       {{ showAllLabels5 ? 'Réduire' : 'Voir plus' }}
     </button>
   </li>
 </ul>
-
+</div>
+</div>
 <h2>Ajouter un nouveau libellé</h2>
 <div>
   <label for="newLabelRootId">Identifiant racine :</label>

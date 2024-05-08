@@ -3,6 +3,8 @@ import { environment } from '../environment/environment';
 import { User } from '../authetification/login/model_user';
 import { AuthService } from '../authetification/auth.service';
 import { isPlatformBrowser } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { NotificationsService } from './navbar-notif/notif_service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,8 +15,17 @@ export class NavbarComponent {
   public    currentSkin:string = "white";
   imgPrefix = environment.apiUrl + '/avatars/';
   public currentUser: User | null = null;
+  public showNotifCenter: boolean = false;
+  public notifications = [];
+  notifsCount: number = 0;
 
-  constructor(private authService: AuthService,@Inject(PLATFORM_ID) private platformId: Object) {}
+  subscription = new Subscription();
+  constructor(private authService: AuthService,@Inject(PLATFORM_ID) private platformId: Object, private notificationsService: NotificationsService) {
+    this.notificationsService.onOrderNotificationReceived().subscribe((notif :any)=> {
+      this.notifsCount = this.notifications.unshift();
+    });
+
+  }
 
   ngOnInit() {
 

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import { ChatService, Message } from './chatbot.service';
 import { FecService } from './file-upload/file-upload.service';
 import { ViewChild, ElementRef } from '@angular/core'; 
@@ -8,9 +8,10 @@ import { User } from '../authetification/login/model_user';
 import { isPlatformBrowser } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewchatComponent } from '../chat-div/modal/newchat/newchat.component';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations'; 
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-chatbot',
@@ -26,6 +27,9 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class ChatComponent implements OnInit {
+  @ViewChild('textInput') textInput!: ElementRef<HTMLInputElement>;
+  showParaphrases: boolean = false;
+
   showContent = true;
   imgPrefix = environment.apiUrl + '/avatars/';
   messages: Message[] = [];
@@ -35,13 +39,17 @@ export class ChatComponent implements OnInit {
   recording = false; 
   public conversationExists: boolean = false;
   fecName :string | undefined;
+  question: string = '';
+  selectedParaphrase: any;
+
   currentUser: User | null = null;
   conversationSubscription: Subscription | undefined;
   conversationId!: string;
   selectedMessageId: string | null = null;
   showCommentInput: boolean[] = [];
   newComment: string[] = [];
-
+  inputControl: FormControl = new FormControl('');
+  paraphrases!: any[];
   selectBConvContent:string = '';
   feedbackType: 'like' | 'dislike' | 'comment' | null = null;
   showCommentInputForMessageId: string | null = null;
@@ -55,7 +63,8 @@ export class ChatComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router,
-    
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     
@@ -69,11 +78,28 @@ export class ChatComponent implements OnInit {
       });
     } else {
     }
+    this.inputControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(() => {
+        const inputValue = this.textInput.nativeElement.value;
+        console.log('Valeur de l\'entrée:', inputValue);
+        return this.chatService.getParaphrases(inputValue);
+      })
+    ).subscribe(paraphrases => {
+      this.paraphrases = paraphrases;
+      console.log('Paraphrases récupérées:', paraphrases);
+      this.cdr.detectChanges();
+    }, error => {
+      console.error('Erreur lors de la récupération des paraphrases:', error);
+    });
+    
+    
   
     this.route.paramMap.subscribe(params => {
       this.conversationId = params.get('id') || '';
       this.chatService.initSocketListeners(this.conversationId);
-
+this.getParaphrases();
      
     if (this.conversationId) {
       this.conversationExists = true; 
@@ -108,11 +134,48 @@ export class ChatComponent implements OnInit {
    // this.messages.forEach(() => this.showComments.push(false));
 
   }
+  onInputChange() {
+    if (this.value.trim() !== '') {
+
+    this.chatService.getParaphrases(this.value).subscribe(paraphrases => {
+      this.ngZone.run(() => {
+        this.paraphrases = paraphrases;
+        console.log(paraphrases)
+      });
+      console.log('Paraphrases récupérées:', paraphrases);
+    }, error => {
+      console.error('Erreur lors de la récupération des paraphrases:', error);
+    });
+    this.value = '';
+
+  }  }
   
   bots: any[] = []; 
+  getParaphrases() {
+    if (this.value.trim() !== '') {
+      this.chatService.getParaphrases(this.value).subscribe(data => {
+        this.paraphrases = data.paraphrases;
+        console.log("sawfa nabqa hou,a", this.paraphrases);
+        this.cdr.detectChanges();
+      });
+    } else {
+      this.paraphrases = [];
+    }
+  }
   ngOnDestroy() {
     if (this.conversationSubscription) {
       this.conversationSubscription.unsubscribe();
+    }
+  }
+  selectParaphrase(paraphrase: any) {
+    this.value = paraphrase.paraphrase; 
+    this.showParaphrases = false; 
+  }
+  onKeyUp() {
+    if (this.value.trim() === '') {
+      this.showParaphrases = false; 
+    } else {
+      this.showParaphrases = true; 
     }
   }
   

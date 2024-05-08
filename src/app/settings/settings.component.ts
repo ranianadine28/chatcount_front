@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SettingsService } from './setting.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-settings',
@@ -21,11 +22,14 @@ export class SettingsComponent implements OnInit {
   showAllLabels4 = false;
   showAllLabels5 = false;
   showLabels1: boolean = false;
-
+showIcon :boolean=false;
   showLabels2: boolean = false;
   showLabels3: boolean = false;
   showLabels4: boolean = false;
   showLabels5: boolean = false;
+  searchRootId: string = '';
+  searchLabel: string = '';
+  @ViewChild('dropdown') dropdown: NgbDropdown | undefined;
 
 
   newLabelRootId: string = '';
@@ -105,6 +109,13 @@ export class SettingsComponent implements OnInit {
         }
       );
   }
+  searchLabels() {
+    // Appel de votre méthode de service pour rechercher les libellés avec les critères de recherche
+    this.settingsService.getAllLabelsbyRE(this.searchRootId, this.searchLabel).subscribe((labels) => {
+      this.labels = labels;
+      
+    });
+  }
   getAllLabels2(): void {
     this.settingsService.getAllLabels2()
       .subscribe(
@@ -156,6 +167,8 @@ export class SettingsComponent implements OnInit {
   addNewLabel(): void {
     if (!this.newLabelRootId || !this.newLabelName) {
       this._snackBar.open('Veuillez saisir la racine et le nom du libellé.', 'Fermer', {
+        panelClass: ['redNoMatch'] ,
+
         duration: 5000,
         horizontalPosition: 'center',
         verticalPosition: 'top'
@@ -184,10 +197,14 @@ export class SettingsComponent implements OnInit {
           console.error("File upload error:", error);
           if (error.status === 409) {
             this._snackBar.open('Libellé existe déja!', 'Fermer', {
+              panelClass: ['redNoMatch'] ,
+
               duration: 5000, 
             });
           }  else {
               this._snackBar.open('Une erreur inconnue s"est produite .', 'Fermer', {
+                panelClass: ['redNoMatch'] ,
+
                 duration: 5000, 
               });
             }
@@ -324,11 +341,168 @@ export class SettingsComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log('Libellé mis à jour avec succès :', response.message);
-          this.getAllLabels();
+          this._snackBar.open('Libellé mis à jour avec succès.', 'Fermer', {
+            panelClass: ['redNoMatch'] ,
+
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
         },
         (error) => {
           console.error('Erreur lors de la mise à jour du libellé :', error);
         }
       );
+  }
+  updateLabel2(labelId: string, newLabelName: string): void {
+    const updatedLabelData = {
+      label: newLabelName
+    };
+
+    this.settingsService.updateLabel2(labelId, updatedLabelData)
+      .subscribe(
+        (response) => {
+          console.log('Libellé mis à jour avec succès :', response.message);
+          this._snackBar.open('Libellé mis à jour avec succès.', 'Fermer', {
+            panelClass: ['redNoMatch'] ,
+
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du libellé :', error);
+        }
+      );
+  }
+  
+  updateLabel3(labelId: string, newLabelName: string): void {
+    const updatedLabelData = {
+      label: newLabelName
+    };
+
+    this.settingsService.updateLabel3(labelId, updatedLabelData)
+      .subscribe(
+        (response) => {
+          console.log('Libellé mis à jour avec succès :', response.message);
+          this._snackBar.open('Libellé mis à jour avec succès.', 'Fermer', {
+            panelClass: ['redNoMatch'] ,
+
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du libellé :', error);
+        }
+      );
+  }
+  
+  updateLabel4(labelId: string, newLabelName: string): void {
+    const updatedLabelData = {
+      label: newLabelName
+    };
+
+    this.settingsService.updateLabel4(labelId, updatedLabelData)
+      .subscribe(
+        (response) => {
+          console.log('Libellé mis à jour avec succès :', response.message);
+          this._snackBar.open('Libellé mis à jour avec succès.', 'Fermer', {
+            panelClass: ['redNoMatch'] ,
+
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du libellé :', error);
+        }
+      );
+  }
+  
+  updateLabel5(labelId: string, newLabelName: string): void {
+    const updatedLabelData = {
+      label: newLabelName
+    };
+
+    this.settingsService.updateLabel5(labelId, updatedLabelData)
+      .subscribe(
+        (response) => {
+          console.log('Libellé mis à jour avec succès :', response.message);
+          this._snackBar.open('Libellé mis à jour avec succès.', 'Fermer', {
+            panelClass: ['redNoMatch'] ,
+
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du libellé :', error);
+        }
+      );
+  }
+  onDeleteLabel1(conversationId: string): void {
+    this.settingsService.deletelabel(conversationId).subscribe(
+      () => {
+        this.getAllLabels();
+        location.reload();
+        console.log('Libellé supprimé avec succès');
+      },
+      error => {
+        console.error('Erreur lors de la suppression du libellé :', error);
+      }
+    );
+  }
+  onDeleteLabel2(conversationId: string): void {
+    this.settingsService.deletelabel2(conversationId).subscribe(
+      () => {
+        this.getAllLabels2();
+        location.reload();
+        console.log('Libellé supprimé avec succès');
+      },
+      error => {
+        console.error('Erreur lors de la suppression du libellé :', error);
+      }
+    );
+  }
+  onDeleteLabel3(conversationId: string): void {
+    this.settingsService.deletelabel3(conversationId).subscribe(
+      () => {
+        this.getAllLabels3();
+        location.reload();
+        console.log('Libellé supprimé avec succès');
+      },
+      error => {
+        console.error('Erreur lors de la suppression du libellé :', error);
+      }
+    );
+  }
+  onDeleteLabel4(conversationId: string): void {
+    this.settingsService.deletelabel4(conversationId).subscribe(
+      () => {
+        this.getAllLabels4();
+        location.reload();
+        console.log('Libellé supprimé avec succès');
+      },
+      error => {
+        console.error('Erreur lors de la suppression du libellé :', error);
+      }
+    );
+  }
+  onDeleteLabel5(conversationId: string): void {
+    this.settingsService.deletelabel5(conversationId).subscribe(
+      () => {
+        this.getAllLabels5();
+        location.reload();
+        console.log('Libellé supprimé avec succès');
+      },
+      error => {
+        console.error('Erreur lors de la suppression du libellé :', error);
+      }
+    );
   }
 }

@@ -12,6 +12,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { NgbDropdown, NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DocumentDivComponent } from '../knowledge/document-div/document-div.component';
 import { AddFolderModalComponent } from '../knowledge/add-folder-modal/add-folder-modal.component';
+import { NavbarNotifComponent } from '../navbar/navbar-notif/navbar-notif.component';
 
 
 
@@ -93,7 +94,8 @@ const mainroutes: Routes = [
         ChatDivComponent,
         NavbarComponent,
         DocumentDivComponent,
-        AddFolderModalComponent
+        AddFolderModalComponent,
+        NavbarNotifComponent
        
     ],
     imports: [

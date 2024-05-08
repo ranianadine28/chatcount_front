@@ -59,8 +59,19 @@
   z-index: 999; /* Assure que la div est au-dessus du contenu */
 }
 
-
-
+.input-suggestions {
+  top: 100%; 
+  left: 0; 
+  background-color: #fff; 
+  border: 1px solid #ccc; 
+  list-style: none; 
+  padding: 5px 0; 
+  max-height: 200px; /* Limit list height (optional) */
+  overflow-y: auto; /* Enable scrolling for long lists */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  width: 100%; /* Match the input width */
+  z-index: 1; /* Ensure list appears above other elements */
+}
 
 
 .btn-send {
@@ -270,4 +281,28 @@ li::before {
   display: inline-block;
   width: 1em;
   margin-left: -1em;
+}
+.conversation-item {
+  padding: 10px;
+  border-bottom: 1px solid hsl(220, 2%, 76%); /* Bordure inférieure pour séparer les éléments de la liste */
+}
+.paraphrase-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.paraphrase-item {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.paraphrase-original {
+  font-weight: bold;
+}
+
+.paraphrase-arrow {
+  margin: 0 5px;
 }

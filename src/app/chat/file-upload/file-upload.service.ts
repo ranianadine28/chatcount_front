@@ -106,6 +106,9 @@ export class FecService {
   getFecsd(userId: string | null,folderId: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/dossier/${userId}/${folderId}/fec`);
   }
+  getFecsByState(userId: string | null,folderId: string,state:string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/dossier/filter/${userId}/${folderId}/${state}`);
+  }
   getFecName(conversationId: string): Observable<any>{
     return this.http.get<{ name: string }>(`${this.apiUrl}/dossier/getFecName/${conversationId}`).pipe(
       catchError(error => {

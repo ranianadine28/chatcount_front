@@ -12,9 +12,12 @@
             <div class="card" >
                 <h2 style="margin-top: 25px;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 30px;">Exemples de questions auxquelles je peux répondre :</h2>
                 <ul>
-                    <li style="font-size: 20px;">Quel est mon chiffre d'affaires? </li>
-                    <li style="font-size: 20px;">Combien ai-je encaissé? </li>
-                    <li style="font-size: 20px;"> Peux tu me donner lee détail de mes dépences?</li>
+                  <ul>
+                    <li style="font-size: 20px;">Quel est mon chiffre d'affaires?</li>
+                    <li style="font-size: 20px;">Combien ai-je encaissé?</li>
+                    <li style="font-size: 20px;">Peux-tu me donner les détails de mes dépenses?</li>
+                  </ul>
+                  
                   
                 </ul>
             </div>
@@ -33,6 +36,7 @@
           <div class="row">
             <div class="col text-right">
               <div *ngIf="fecName" class="fec-name" style="font-size: 20px;">{{ fecName }}</div>
+             
             </div>
           </div>
           
@@ -100,21 +104,29 @@
       </div>
    
     </div>
-      <div class="row message-input-row">
-        <div class="col-md-6">
-          <div class="input-group">
-            <input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text" class="form-control" placeholder="Entrez votre message..." aria-label="Message" aria-describedby="button-addon2">
-            <div class="input-group-append">
-              <button (click)="startRecording()" class="btn btn-outline-primary-icon" type="button">
-                <i class="fa fa-microphone"></i> 
-              </button>
-              
-              <button (click)="sendMessage()" class="btn btn-outline-primary" type="button" id="button-addon2">Envoyer</button>
-
-            </div>
+    <div class="row message-input-row">
+      <div class="col-md-6">
+        <div class="input-group">
+          <div class="input-suggestions" *ngIf="showParaphrases">
+            <ul class="paraphrase-list">
+              <li *ngFor="let paraphrase of paraphrases" class="paraphrase-item" (click)="selectParaphrase(paraphrase)">
+                <span>{{ paraphrase.paraphrase }}</span>
+              </li>
+            </ul>
+          </div>
+          <input [(ngModel)]="value" (ngModelChange)="getParaphrases()" (keyup)="onKeyUp()" type="text" class="form-control" placeholder="Entrez votre message..." aria-label="Message" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button (click)="startRecording()" class="btn btn-outline-primary-icon" type="button">
+              <i class="fa fa-microphone"></i> 
+            </button>
+            <button (click)="sendMessage()" class="btn btn-outline-primary" type="button" id="button-addon2">Envoyer</button>
           </div>
         </div>
       </div>
+    </div>
+    
+   
+    
     </div>
   </div>
 </div>

@@ -6,6 +6,7 @@ import { SettingsService } from './setting.service';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   {
@@ -19,7 +20,9 @@ const routes: Routes = [
   imports: [
     SharedModule,
     RouterModule.forChild(routes),
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgbDropdownModule,
+    NgbModule,  
   ],
   declarations: [SettingsComponent],
   providers: [SettingsService, provideAnimations(),

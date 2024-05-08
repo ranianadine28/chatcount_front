@@ -299,5 +299,28 @@ lancerTraitementFEC(fecId: string) {
       });    }
   );
 }
+getFecsByState(userId: string, folderId: string, state: string) {
+  this.fecService.getFecsByState(userId, folderId, state).subscribe(
+    response => {
+      console.log("FECs filtrés par état :", response);
+      this.fecs = response.fecs
+      this.cdr.detectChanges(); 
+    },
+    error => {
+      console.error("Erreur lors de la récupération des FECs par état :", error);
+    }
+  );
+}
+filterFecsByState(event: any) {
+  const selectedValue = event.target.value;
+  if (selectedValue === "") {
+    this.getFecs(); 
+  } else {
+    this.getFecsByState(this.currentUser?.userInfo._id!, this.folderId, selectedValue);
+  }
+}
+
+
+
 
 }

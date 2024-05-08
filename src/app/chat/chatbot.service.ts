@@ -61,7 +61,9 @@ export class ChatService {
       })
     );
   }
-  
+  getParaphrases(text: string): Observable<any>  {
+    return this.http.post<any>(`${this.apiUrl}/conversation/paraphrases`, { text });
+  }
  
   initSocketListeners(conversationId: string) {
     // Écouter l'événement 'fetchFecName' pour récupérer le nom FEC

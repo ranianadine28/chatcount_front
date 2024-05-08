@@ -37,6 +37,15 @@
   <!-- Section pour afficher la liste des FEC déjà présents dans le dossier -->
   <div class="fec-list-section" *ngIf="folderId !== ':id'">
     <h3>Liste des FEC</h3>
+    <div class="form-group">
+      <label for="etatSelect">Filtrer par état :</label>
+      <select class="form-control" id="etatSelect" (change)="filterFecsByState($event)">
+        <option value="">Tous les fecs</option>
+        <option value="non traité">Non traités</option>
+        <option value="traité">Traités</option>
+        <!-- Ajoutez d'autres options pour les différents états -->
+      </select>
+    </div>
     <div class="fec-list">
       <!-- Afficher la liste des FEC ici -->
  
@@ -70,8 +79,8 @@
               <tr>
                 <td class="font-weight-bold">{{ fec.name }}</td>
                
-                <td class="font-weight-bold">{{ fec.createdAt }}</td>
-                <td class="font-weight-bold">{{ fec.updatedAt }}</td>
+                <td class="font-weight-bold">{{ fec.createdAt | date: 'dd/MM/yyyy à HH:mm'  }}</td>
+                <td class="font-weight-bold">{{ fec.updatedAt | date: 'dd/MM/yyyy à HH:mm'  }}</td>
                 <td class="custom-badge" style="border-radius: 20px; text-align: center;"  [ngClass]="getColor(fec.etat)">{{ fec.etat }}</td>
 
                 <td class="pl-3 d-flex">
