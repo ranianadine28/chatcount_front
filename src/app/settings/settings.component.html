@@ -1,7 +1,108 @@
 <div class="document-page">
   <img src="assets/mapping.jpg" alt="Logo" class="rounded-circle" height="150" width="150" style="margin-left: 35%; margin-bottom: 20px;">
-  <h1 class="title" style="margin-left: 30%;">Mapping Section</h1>
-  <div class="card-container" >
+  <h1 class="title" style="margin-left: 30%;">Paramétrages  </h1>
+  <div class="add-fec-section" >
+    <h3>Mapper automatiquement via le mapping ChatCount</h3>
+    <div class="add-fec-options">
+      <div class="add-fec-option">
+        <button class="add-fec-button" [style.background-color]="fecSettingsButtonColor" (click)="toggleFECSettings()"> <i class="fa fa-tag"></i> Paramétrage du Traitement des FEC </button>
+      </div>
+      <div class="add-fec-option">
+        <button class="add-fec-button" [style.background-color]="keywordsButtonColor" (click)="toggleKeywords()"> <i class="fa fa-code"></i> Paramétrage des mots clés </button>
+      </div>
+      <div class="add-fec-option">
+        <button class="add-fec-button" [style.background-color]="patternsButtonColor" (click)="togglePatterns()"> <i class="fa fa-check"></i> Paramétrage des patterns </button>
+      </div>
+    </div>
+  </div>
+  <div class="fec-list-section">
+    <div class="table-container" *ngIf="showKeywords">
+      <div class="add-column">
+        <input type="text" [(ngModel)]="newColumnName" placeholder="Nom de la nouvelle colonne">
+        <button (click)="addColumn()">Ajouter colonne</button>
+      </div>
+      
+      <table class="csv-table">
+        <thead>
+          <tr>
+            <th *ngFor="let column of csvData?.titre.split(';')">{{ column }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of csvData?.contenu; let i = index">
+            <ng-container *ngFor="let cell of row.split(';'); let j = index">
+              <td>
+                <ng-container *ngIf="!isEditing[i]?.[j]; else editMode">
+                  <span (click)="toggleEdit(i, j)" class="edit-icon"><i class="fas fa-edit"></i></span>
+                  <div (click)="deleteCsvData(i, j)" class="delete-icon">
+                    <i class="fas fa-trash"></i>
+                  </div>
+                  <span>{{ cell }}</span>
+                </ng-container>
+                <ng-template #editMode>
+                  <input type="text" [(ngModel)]="csvData.contenu[i][j]" (blur)="updateCellValue(i, j, $event)" />
+                </ng-template>
+              </td>
+            </ng-container>
+           
+          </tr>
+          <tr>
+            <ng-container *ngFor="let column of csvData?.titre.split(';'); let j = index">
+              <td>
+                <input type="text" [(ngModel)]="newRow[j]" />
+              </td>
+            </ng-container>
+            <td>
+              <button (click)="insertRow()" class="add_buttom">Insérer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      
+    </div>
+    <div class="table-container" *ngIf="showPatterns">
+     
+      <table class="csv-table">
+        <thead>
+          <tr>
+            <th *ngFor="let column of patternsData?.titre.split(';')">{{ column }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of patternsData?.contenu; let i = index">
+            <ng-container *ngFor="let cell of row.split(';'); let j = index">
+              <td>
+                <ng-container *ngIf="!isEditing[i]?.[j]; else editMode">
+                  <span (click)="toggleEdit(i, j)" class="edit-icon"><i class="fas fa-edit"></i></span>
+                  <div (click)="deletePatternData(i, j)" class="delete-icon">
+                    <i class="fas fa-trash"></i>
+                  </div>
+                  <span>{{ cell }}</span>
+                </ng-container>
+                <ng-template #editMode>
+                  <input type="text" [(ngModel)]="patternsData.contenu[i][j]" (blur)="updatePatternValue(i, j, $event)" />
+                </ng-template>
+              </td>
+            </ng-container>
+           
+          </tr>
+          <tr>
+            <ng-container *ngFor="let column of patternsData?.titre.split(';'); let j = index">
+              <td>
+                <input type="text" [(ngModel)]="newRow[j]" />
+              </td>
+            </ng-container>
+            <td>
+              <button (click)="insertRowPaatern()" class="add_buttom">Insérer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      
+    </div>
+  <div  *ngIf="showFECSettings"> <div class="card-container" >
     <div class="labels-row">
       <h2 (click)="toggleLabels1()">Racine 1</h2>
       <h2 (click)="toggleLabels2()">Racine 2</h2>
@@ -155,4 +256,7 @@
 </div>
 <button (click)="addNewLabel()" class="btn btn-outline-primary">Ajouter</button>
 </div>
+
+  
 </div>
+ 
