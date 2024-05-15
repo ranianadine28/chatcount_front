@@ -17,7 +17,11 @@ import { NavbarComponent } from '../navbar/navbar.component';
 export class DashboardComponent implements OnInit {
   public    currentSkin:string = "white";
   
-
+  currentRoot: string = 'root1'; // Default to the first root
+      
+  selectRoot(root: string): void {
+    this.currentRoot = root;
+  }
   public currentUser: User | null = null;
   imgPrefix = environment.apiUrl + '/avatars/';
   public coreConfig: any;

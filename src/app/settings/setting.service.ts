@@ -11,82 +11,28 @@ export class SettingsService {
 
   constructor(private http: HttpClient) { }
 
-  getAllLabels() {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getALLlabel`);
-  }
-  getAllLabelsbyRE(rootId: string, label: string) {
-    return this.http.get<any[]>(`${this.apiUrl}/label/searchAllLabels/${rootId}/${label}`);
-  }
-  getAllLabelsbyRE2(rootId: string, label: string) {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getAllLabels2/${rootId}/${label}`);
-  }
-  getAllLabelsbyRE3(rootId: string, label: string) {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getAllLabels3/${rootId}/${label}`);
-  }
-  getAllLabelsbyRE4(rootId: string, label: string) {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getAllLabels4/${rootId}/${label}`);
-  }
-  getAllLabelsbyRE5(rootId: string, label: string) {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getAllLabels5/${rootId}/${label}`);
+  getAllLabels(labelNumber: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/label/getAllLabels/${labelNumber}`);
   }
   
-  getAllLabels2() {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getALLlabel2`);
+  getAllLabelsbyRE(rootId: string, label: string,labelNumber: number) {
+    return this.http.get<any[]>(`${this.apiUrl}/label/searchAllLabels/${rootId}/${label}/${labelNumber}`);
   }
-  getAllLabels3() {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getALLlabel3`);
+
+  
+
+  addNewLabel(newLabelData: any,lastnumber:number) {
+    return this.http.post<any>(`${this.apiUrl}/label/addLabel/${lastnumber}`, newLabelData);
   }
-  getAllLabels4() {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getALLlabel4`);
+
+  updateLabel(labelId: string, updatedLabelData: any,lastnumber:number) {
+    return this.http.patch<any>(`${this.apiUrl}/label/updateLabel/${labelId}/${lastnumber}`, updatedLabelData);
   }
-  getAllLabels5() {
-    return this.http.get<any[]>(`${this.apiUrl}/label/getALLlabel5`);
+  
+  deletelabel(folderId: string,labelNumber:number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/label/deleteLabel/${folderId}/${labelNumber}`);
   }
-  addNewLabel(newLabelData: any) {
-    return this.http.post<any>(`${this.apiUrl}/label/addLabel`, newLabelData);
-  }
-  addNewLabel2(newLabelData: any) {
-    return this.http.post<any>(`${this.apiUrl}/label/addLabel2`, newLabelData);
-  }
-  addNewLabel3(newLabelData: any) {
-    return this.http.post<any>(`${this.apiUrl}/label/addLabel3`, newLabelData);
-  }
-  addNewLabel4(newLabelData: any) {
-    return this.http.post<any>(`${this.apiUrl}/label/addLabel4`, newLabelData);
-  }
-  addNewLabel5(newLabelData: any) {
-    return this.http.post<any>(`${this.apiUrl}/label/addLabel5`, newLabelData);
-  }
-  updateLabel(labelId: string, updatedLabelData: any) {
-    return this.http.patch<any>(`${this.apiUrl}/label/updateLabel/${labelId}`, updatedLabelData);
-  }
-  updateLabel2(labelId: string, updatedLabelData: any) {
-    return this.http.patch<any>(`${this.apiUrl}/label/updateLabel2/${labelId}`, updatedLabelData);
-  }
-  updateLabel3(labelId: string, updatedLabelData: any) {
-    return this.http.patch<any>(`${this.apiUrl}/label/updateLabel3/${labelId}`, updatedLabelData);
-  }
-  updateLabel4(labelId: string, updatedLabelData: any) {
-    return this.http.patch<any>(`${this.apiUrl}/label/updateLabel4/${labelId}`, updatedLabelData);
-  }
-  updateLabel5(labelId: string, updatedLabelData: any) {
-    return this.http.patch<any>(`${this.apiUrl}/label/updateLabel5/${labelId}`, updatedLabelData);
-  }
-  deletelabel(folderId: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/label/deleteLabel/${folderId}`);
-  }
-  deletelabel2(folderId: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/label/deleteLabel2/${folderId}`);
-  }
-  deletelabel3(folderId: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/label/deleteLabel3/${folderId}`);
-  }
-  deletelabel4(folderId: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/label/deleteLabel4/${folderId}`);
-  }
-  deletelabel5(folderId: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/label/deleteLabel5/${folderId}`);
-  }
+  
   getCsvData(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/mots/getCsvData`)
       .pipe(
@@ -139,5 +85,35 @@ export class SettingsService {
   }
   updateCsvDataColonne(newColumn: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/updateCsvDataColonne`, { newColumn });
+  }
+  uploadCsvFile(fileName: string): Observable<any> {
+    const body = { fileName };
+
+    return this.http.post<any>(`${this.apiUrl}/mots/addTabMotClets`, body);
+  }
+  uploadPatternFile(fileName: string): Observable<any> {
+    const body = { fileName };
+
+    return this.http.post<any>(`${this.apiUrl}/patterns/addPaterns`, body);
+  }
+  exportCSV(): void {
+    this.http.get(`${this.apiUrl}/mots/export`, { responseType: 'blob' })
+      .subscribe(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'exportedData.csv');
+        document.body.appendChild(link);
+        link.click();
+        const childNode = document.getElementById('childElement');
+const parentNode = childNode!.parentNode;
+
+console.log(parentNode); // Cela affichera l'élément parent dans la console
+
+        link.parentNode!.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      }, error => {
+        console.error('Erreur lors de l\'exportation des données CSV:', error);
+      });
   }
 }
