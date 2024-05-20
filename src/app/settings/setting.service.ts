@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environment/environment';
 import { Observable, catchError } from 'rxjs';
+import { User } from '../authetification/login/model_user';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,14 @@ export class SettingsService {
 
   
 
-  addNewLabel(newLabelData: any,lastnumber:number) {
-    return this.http.post<any>(`${this.apiUrl}/label/addLabel/${lastnumber}`, newLabelData);
+  addNewLabel(newLabelData: any, lastNumber: number, user: string) {
+    const requestData = {
+      ...newLabelData,
+      user
+    };
+    return this.http.post<any>(`${this.apiUrl}/label/addLabel/${lastNumber}`, requestData);
   }
+  
 
   updateLabel(labelId: string, updatedLabelData: any,lastnumber:number) {
     return this.http.patch<any>(`${this.apiUrl}/label/updateLabel/${labelId}/${lastnumber}`, updatedLabelData);

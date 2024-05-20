@@ -9,7 +9,7 @@
     margin-left: 18%;
     }
     .btn-outline-primary {
-        background: #030640!;
+        background: linear-gradient(to right, #9ccdf8, #030640);;
         border-radius: 15px;
         background-color: #030640;
         color: #f6f2e3;
@@ -220,11 +220,15 @@ td {
   border: 1px solid #ddd;
   padding: 8px;
 }
+.cell-content {
+  display: flex;
+  align-items: center;
+}
 
-.edit-icon,
-.delete-icon {
+
+.edit-icon, .delete-icon {
+  margin-right: 5px; /* Adjust the margin as needed */
   cursor: pointer;
-  padding: 5px;
 }
 
 .edit-icon i {
@@ -235,7 +239,7 @@ td {
   color: #dc3545;
 
 }
-.add_buttom{
+.add_button{
   background-color: #2541b200;
   font-style: italic;
   font-size: 20px;

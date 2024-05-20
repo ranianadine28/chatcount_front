@@ -337,7 +337,7 @@ deletePatternData(rowIndex: number, columnIndex: number): void {
       label: this.newLabelName
     };
 
-    this.settingsService.addNewLabel(newLabelData, lastNumber)
+    this.settingsService.addNewLabel(newLabelData, lastNumber,this.currentUser?.userInfo._id!)
       .subscribe(
         (response) => {
           console.log('Libellé ajouté avec succès :', response.message);
@@ -393,7 +393,8 @@ deletePatternData(rowIndex: number, columnIndex: number): void {
     this.settingsService.deletelabel(conversationId,this.labelNumber).subscribe(
       () => {
         this.getAllLabels(this.labelNumber);
-        location.reload();
+        this.cdr.detectChanges();
+
         console.log('Libellé supprimé avec succès');
       },
       error => {
@@ -419,6 +420,10 @@ deletePatternData(rowIndex: number, columnIndex: number): void {
     fileUploadDialog.click();
   }
   handleFileUpload(file: File) {
+    if (file.name !== "MotCles.csv") {
+      alert("Le fichier importé doit avoir le nom MotCles.csv.");
+      return; 
+    }
     this.fecService.uploadFile(file,this.currentUser?.userInfo._id!).subscribe(
       (response: any) => {
         
@@ -542,6 +547,11 @@ deletePatternData(rowIndex: number, columnIndex: number): void {
     fileUploadDialog.click();
   }
   handleFileUpload2(file: File) {
+    if (file.name !== "similarity.csv") {
+      alert("Le fichier importé doit avoir le nom similarity.csv.");
+      return; 
+    }
+  
     this.fecService.uploadFile(file,this.currentUser?.userInfo._id!).subscribe(
       (response: any) => {
         

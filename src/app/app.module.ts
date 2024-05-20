@@ -23,6 +23,7 @@ const appRoutes: Routes = [
     path: 'pages',
     loadChildren: () => import('./main-layout/pages.module').then(m => m.AppRoutingModule),
   },
+  
 
   {
     path: 'auth',

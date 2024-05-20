@@ -5,6 +5,7 @@ import { AuthService } from '../authetification/auth.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NotificationsService } from './navbar-notif/notif_service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +21,7 @@ export class NavbarComponent {
   notifsCount: number = 0;
 
   subscription = new Subscription();
-  constructor(private authService: AuthService,@Inject(PLATFORM_ID) private platformId: Object, private notificationsService: NotificationsService) {
+  constructor(private router: Router,private authService: AuthService,@Inject(PLATFORM_ID) private platformId: Object, private notificationsService: NotificationsService) {
     this.notificationsService.onOrderNotificationReceived().subscribe((notif :any)=> {
       this.notifsCount = this.notifications.unshift();
     });
@@ -47,5 +48,9 @@ export class NavbarComponent {
   logout(): void {
     this.authService.logout(); 
   }
- 
+  profile():void {
+    this.router.navigate(['/pages/profile', this.currentUser?.userInfo._id]).then(() => {
+      location.reload();
+    });
+}
 }

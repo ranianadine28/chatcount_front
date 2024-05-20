@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environment/environment';
 import { map } from 'rxjs/operators';
@@ -43,7 +43,13 @@ export class AuthService {
         })
       );
   }
-  
+  updateProfile(formData: FormData, userId: string): Observable<any> {
+    return this.http.post<any>(`${this.loginUrl}/user/updateprofil/${userId}`, formData, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    });
+  }
   retrieveCurrentUserFromLocalStorage(): void {
     const currentUserString = localStorage.getItem('currentUser');
     if (currentUserString) {
@@ -57,5 +63,8 @@ export class AuthService {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.router.navigate(['/auth/login']);
+  }
+  updateAvatar(formData: FormData, userID: string): Observable<any> {
+    return this.http.post<any>(`${this.signUpUrl}/user/updateavatar/${userID}`, formData, { reportProgress: true, observe: 'events' });
   }
 }

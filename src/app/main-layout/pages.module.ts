@@ -27,6 +27,15 @@ const mainroutes: Routes = [
         component: MainLayoutComponent,
         children: [
           {
+            path:  'profile/:id',
+            loadChildren:()=> import('../profile-user/profile-user.module').then(m=> m.ProfileModule),
+            data: {
+              role: {
+                page: 'profile',
+              }
+            },
+          },
+          {
             path:  'chat/:id',
             loadChildren:()=> import('../chat/chat.module').then(m=> m.ChatManagementModule),
             data: {
@@ -63,6 +72,7 @@ const mainroutes: Routes = [
               }
             },
           },
+         
         // {
         //   path: 'knowledge',
         //   loadChildren: () => import('../knowledge/knowledge.module').then(m => m.KnowledgeManagementModule),

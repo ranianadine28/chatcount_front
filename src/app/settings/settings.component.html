@@ -26,7 +26,7 @@
         <div style="margin-top: 10px;">
 
         <input  type="text" [(ngModel)]="newColumnName" placeholder="Nom de la colonne">
-        <button (click)="addColumn()">Ajouter colonne</button>
+        <button style="background-color: linear-gradient(to right, #9ccdf8, #030640);" (click)="addColumn()">Ajouter colonne</button>
        </div>
       </div>
       
@@ -39,16 +39,17 @@
         <tbody>
           <tr *ngFor="let row of csvData?.contenu; let i = index">
             <td *ngFor="let cell of row.split(';'); let j = index">
-                <div *ngIf="!isEditing[i]?.[j]; else editMode">
-                    <span (click)="toggleEdit(i, j)" class="edit-icon"><i class="fas fa-edit"></i></span>
-                    <div (click)="deleteCsvData(i, j)" class="delete-icon"><i class="fas fa-trash"></i></div>
-                    <span>{{ cell }}</span>
-                </div>
-                <ng-template #editMode>
-                    <input type="text" [(ngModel)]="csvData.contenu[i][j]" (blur)="updateCellValue(i, j, $event)" />
-                </ng-template>
+              <div *ngIf="!isEditing[i]?.[j]; else editMode" class="cell-content" >
+                <span style="margin-right: 10px;">{{ cell }} </span>
+
+                <span (click)="toggleEdit(i, j)" class="edit-icon"><i class="fas fa-edit"></i></span>
+                <div (click)="deleteCsvData(i, j)" class="delete-icon"><i class="fas fa-trash"></i></div>
+              </div>
+              <ng-template #editMode>
+                <input type="text" [(ngModel)]="csvData.contenu[i][j]" (blur)="updateCellValue(i, j, $event)" />
+              </ng-template>
             </td>
-        </tr>
+          </tr>
           <tr>
             <ng-container *ngFor="let column of csvData?.titre.split(';'); let j = index">
               <td>
@@ -56,11 +57,12 @@
               </td>
             </ng-container>
             <td>
-              <button (click)="insertRow()" class="add_buttom">Insérer</button>
+              <button (click)="insertRow()" class="add_button">Insérer</button>
             </td>
           </tr>
         </tbody>
       </table>
+      
       
       
     </div>
@@ -83,19 +85,18 @@
           <tr *ngFor="let row of patternsData?.contenu; let i = index">
             <ng-container *ngFor="let cell of row.split(';'); let j = index">
               <td>
-                <ng-container *ngIf="!isEditing[i]?.[j]; else editMode">
+                <div *ngIf="!isEditing[i]?.[j]; else editMode" class="cell-content">
+                  <span style="margin-right: 5px;">{{ cell }}</span>
                   <span (click)="toggleEdit(i, j)" class="edit-icon"><i class="fas fa-edit"></i></span>
                   <div (click)="deletePatternData(i, j)" class="delete-icon">
                     <i class="fas fa-trash"></i>
                   </div>
-                  <span>{{ cell }}</span>
-                </ng-container>
+                </div>
                 <ng-template #editMode>
                   <input type="text" [(ngModel)]="patternsData.contenu[i][j]" (blur)="updatePatternValue(i, j, $event)" />
                 </ng-template>
               </td>
             </ng-container>
-           
           </tr>
           <tr>
             <ng-container *ngFor="let column of patternsData?.titre.split(';'); let j = index">
@@ -104,7 +105,7 @@
               </td>
             </ng-container>
             <td>
-              <button (click)="insertRowPaatern()" class="add_buttom">Insérer</button>
+              <button (click)="insertRowPaatern()" class="add_button">Insérer</button>
             </td>
           </tr>
         </tbody>
@@ -120,7 +121,7 @@
       <form (ngSubmit)="searchLabels()">
         <input class="recherche" type="text" [(ngModel)]="searchRootId" name="searchRootId" placeholder="Racine">
         <input class="recherche" type="text" [(ngModel)]="searchLabel" name="searchLabel" placeholder="Libellé">
-        <button type="submit">Rechercher</button>
+        <button style="background-color: rgb(72, 100, 181);margin-left: 5px;"  type="submit">Rechercher</button>
       </form>
       
       <div class=" h-[73vh] flex-grow overflow-y-scroll">
@@ -144,7 +145,7 @@
       <label for="newLabelName">Nom du libellé :</label>
       <input type="text" id="newLabelName" [(ngModel)]="newLabelName">
     </div>
-    <button (click)="addNewLabel(labelNumber)" class="btn btn-outline-primary">Ajouter</button>
+    <button (click)="addNewLabel(labelNumber)" style="background-color: linear-gradient(to right, #9ccdf8, #030640);"  class="btn btn-outline-primary">Ajouter</button>
     
 
   
